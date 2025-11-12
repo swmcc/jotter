@@ -10,9 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_12_231211) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_12_232632) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "bookmarks", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "title", null: false
+    t.text "description"
+    t.string "url", null: false
+    t.string "short_code", null: false
+    t.boolean "is_public", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["short_code"], name: "index_bookmarks_on_short_code", unique: true
+    t.index ["user_id"], name: "index_bookmarks_on_user_id"
+  end
 
   create_table "sessions", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -23,6 +36,23 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_12_231211) do
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
+  create_table "taggings", force: :cascade do |t|
+    t.bigint "tag_id", null: false
+    t.string "taggable_type", null: false
+    t.bigint "taggable_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tag_id"], name: "index_taggings_on_tag_id"
+    t.index ["taggable_type", "taggable_id"], name: "index_taggings_on_taggable"
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_tags_on_name", unique: true
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email_address", null: false
     t.string "password_digest", null: false
@@ -31,5 +61,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_12_231211) do
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
+  add_foreign_key "bookmarks", "users"
   add_foreign_key "sessions", "users"
+  add_foreign_key "taggings", "tags"
 end
