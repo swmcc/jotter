@@ -4,13 +4,22 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
       <div class="flex items-center justify-between">
         <div>
-          <%= link_to dashboard_path, class: "hover:opacity-70" do %>
+          <% if authenticated? %>
+            <%= link_to dashboard_path, class: "hover:opacity-70" do %>
+              <h1 class="text-2xl font-bold text-gray-900">Jotter</h1>
+            <% end %>
+          <% else %>
             <h1 class="text-2xl font-bold text-gray-900">Jotter</h1>
+            <p class="text-sm text-gray-600">Public bookmarks</p>
           <% end %>
         </div>
         <div class="flex items-center gap-4">
-          <span class="text-sm text-gray-700"><%= Current.session.user.email_address %></span>
-          <%= button_to "Sign out", session_path, method: :delete, class: "text-sm text-gray-600 hover:text-gray-900 underline" %>
+          <% if authenticated? %>
+            <span class="text-sm text-gray-700"><%= Current.session.user.email_address %></span>
+            <%= button_to "Sign out", session_path, method: :delete, class: "text-sm text-gray-600 hover:text-gray-900 underline" %>
+          <% else %>
+            <%= link_to "Sign in", new_session_path, class: "text-sm text-blue-600 hover:text-blue-900 underline" %>
+          <% end %>
         </div>
       </div>
     </div>
@@ -24,7 +33,9 @@
         <h2 class="text-3xl font-bold text-gray-900">Bookmarks</h2>
         <p class="text-gray-600 mt-1"><%= @bookmarks.count %> bookmarks</p>
       </div>
-      <%= link_to "New Bookmark", new_bookmark_path, class: "rounded bg-blue-600 hover:bg-blue-700 px-4 py-2 text-white font-medium transition-colors" %>
+      <% if authenticated? %>
+        <%= link_to "New Bookmark", new_bookmark_path, class: "rounded bg-blue-600 hover:bg-blue-700 px-4 py-2 text-white font-medium transition-colors" %>
+      <% end %>
     </div>
 
     <!-- Search and Filter -->
@@ -104,10 +115,12 @@
                   </div>
                 </div>
 
-                <div class="flex flex-col gap-2 ml-4">
-                  <%= link_to "Edit", edit_bookmark_path(bookmark), class: "rounded bg-gray-200 hover:bg-gray-300 px-3 py-1.5 text-sm text-gray-700 font-medium transition-colors text-center" %>
-                  <%= button_to "Delete", bookmark_path(bookmark), method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "rounded bg-red-600 hover:bg-red-700 px-3 py-1.5 text-sm text-white font-medium transition-colors" %>
-                </div>
+                <% if authenticated? %>
+                  <div class="flex flex-col gap-2 ml-4">
+                    <%= link_to "Edit", edit_bookmark_path(bookmark), class: "rounded bg-gray-200 hover:bg-gray-300 px-3 py-1.5 text-sm text-gray-700 font-medium transition-colors text-center" %>
+                    <%= button_to "Delete", bookmark_path(bookmark), method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "rounded bg-red-600 hover:bg-red-700 px-3 py-1.5 text-sm text-white font-medium transition-colors" %>
+                  </div>
+                <% end %>
               </div>
             </div>
           <% end %>

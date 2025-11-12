@@ -1,8 +1,15 @@
 class BookmarksController < ApplicationController
+  allow_unauthenticated_access only: [:index, :show]
   before_action :set_bookmark, only: [:show, :edit, :update, :destroy]
 
   def index
-    @bookmarks = Current.session.user.bookmarks.includes(:tags).order(created_at: :desc)
+    # Show all bookmarks if logged in, only public if not
+    if authenticated?
+      @bookmarks = Current.session.user.bookmarks.includes(:tags).order(created_at: :desc)
+    else
+      @bookmarks = Bookmark.where(is_public: true).includes(:tags).order(created_at: :desc)
+    end
+
     @tags = Tag.joins(:taggings).where(taggings: { taggable_type: 'Bookmark', taggable_id: @bookmarks.pluck(:id) }).distinct.order(:name)
 
     # Filter by tag if provided
@@ -18,6 +25,10 @@ class BookmarksController < ApplicationController
   end
 
   def show
+    # Allow public bookmarks to be viewed by anyone
+    if !authenticated? && !@bookmark.is_public
+      redirect_to bookmarks_path, alert: "This bookmark is private"
+    end
   end
 
   def new
@@ -53,7 +64,11 @@ class BookmarksController < ApplicationController
   private
 
   def set_bookmark
-    @bookmark = Current.session.user.bookmarks.find(params[:id])
+    if authenticated?
+      @bookmark = Current.session.user.bookmarks.find(params[:id])
+    else
+      @bookmark = Bookmark.find(params[:id])
+    end
   end
 
   def bookmark_params
