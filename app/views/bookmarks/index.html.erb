@@ -81,6 +81,10 @@
                     <span class="flex items-center gap-1">
                       <%= bookmark.is_public ? "🌐 Public" : "🔒 Private" %>
                     </span>
+
+                    <span class="text-xs text-gray-400">
+                      <%= bookmark.created_at.strftime("%d %b %Y at %H:%M") %>
+                    </span>
                   </div>
 
                   <% if bookmark.tags.any? %>
@@ -100,9 +104,9 @@
                   </div>
                 </div>
 
-                <div class="flex gap-2 ml-4">
-                  <%= link_to "Edit", edit_bookmark_path(bookmark), class: "text-sm text-gray-600 hover:text-gray-900 underline" %>
-                  <%= button_to "Delete", bookmark_path(bookmark), method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "text-sm text-red-600 hover:text-red-900 underline" %>
+                <div class="flex flex-col gap-2 ml-4">
+                  <%= link_to "Edit", edit_bookmark_path(bookmark), class: "rounded bg-gray-200 hover:bg-gray-300 px-3 py-1.5 text-sm text-gray-700 font-medium transition-colors text-center" %>
+                  <%= button_to "Delete", bookmark_path(bookmark), method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "rounded bg-red-600 hover:bg-red-700 px-3 py-1.5 text-sm text-white font-medium transition-colors" %>
                 </div>
               </div>
             </div>
