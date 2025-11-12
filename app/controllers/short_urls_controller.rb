@@ -4,15 +4,10 @@ class ShortUrlsController < ApplicationController
   def show
     @bookmark = Bookmark.find_by(short_code: params[:short_code])
 
-    # Handle non-existent bookmark
-    unless @bookmark
+    # Handle non-existent bookmark or private bookmark
+    # Private bookmarks don't work via short URL for anyone, not even the owner
+    unless @bookmark && @bookmark.is_public
       redirect_to root_path, alert: "Nice try, but that short code doesn't exist. Maybe check your typing?"
-      return
-    end
-
-    # Only show public bookmarks or bookmarks owned by current user
-    unless @bookmark.is_public || (authenticated? && @bookmark.user == Current.session.user)
-      redirect_to root_path, alert: "This bookmark is private. Either it doesn't exist, or it's none of your business."
       return
     end
 
