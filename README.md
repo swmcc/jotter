@@ -68,28 +68,54 @@ rails db:migrate
 rails db:reset
 ```
 
-## Features (Planned)
+## Features
 
-### Images
+### Bookmarks ✅
+- Save URLs with title and description
+- Tag-based organisation
+- Search and filter by tags
+- Public/private bookmark visibility
+- Short URLs for easy sharing (`/x/<short_code>`)
+- Browser bookmarklet for one-click saving
+- Public bookmark directory
+- Clean, responsive interface
+
+### Images (Coming Soon)
 - Upload images with drag-and-drop
 - Generate short, unique URLs for sharing
 - Tag images for organisation
 - Public/private image visibility
 - Image optimisation and resizing
 
-### Bookmarks
-- Save URLs with title and description
-- Tag-based organisation
-- Search and filter by tags
-- Public/private bookmark visibility
-- Automatic metadata extraction (page title, description)
-- Export bookmarks in standard formats
+## Browser Bookmarklet
 
-### Shared
-- Unified short URL system
-- Cross-content search
-- Clean, minimal public pages
-- Modern, responsive interface
+Save any webpage to your Jotter with one click!
+
+### Installation
+
+1. **Show your bookmarks bar** (if hidden):
+   - Chrome/Edge: Press `Ctrl+Shift+B` (Windows) or `Cmd+Shift+B` (Mac)
+   - Firefox: Press `Ctrl+Shift+B` (Windows) or `Cmd+Shift+B` (Mac)
+
+2. **Create a new bookmark**:
+   - Right-click your bookmarks bar
+   - Select "Add page..." or "Add bookmark"
+   - Name: `Add to Jotter` (or whatever you prefer)
+   - URL: Paste the code below
+
+3. **Bookmarklet code**:
+```javascript
+javascript:(function(){var url=encodeURIComponent(window.location.href);var title=encodeURIComponent(document.title);var desc=encodeURIComponent(window.getSelection().toString().substring(0,500));window.location.href='http://localhost:3000/bookmarks/new?url='+url+'&title='+title+'&description='+desc;})();
+```
+
+4. **Usage**:
+   - Browse to any webpage you want to save
+   - Optionally select text to use as the description
+   - Click the "Add to Jotter" bookmark
+   - The form will open pre-filled with the page details
+   - Add tags and save!
+
+**Note**: Replace `http://localhost:3000` with your actual Jotter URL in production.
 
 ## Contributing
 
