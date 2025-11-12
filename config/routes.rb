@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :passwords, param: :token
 
   get "dashboard", to: "dashboard#index"
+  get "about", to: "about#index"
 
   # Bookmarks
   resources :bookmarks
