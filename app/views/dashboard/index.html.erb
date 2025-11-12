@@ -1,0 +1,57 @@
+<div class="min-h-screen bg-gray-50">
+  <!-- Header -->
+  <header class="bg-white border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-2xl font-bold text-gray-900">Jotter</h1>
+          <p class="text-sm text-gray-600">Images and bookmarks</p>
+        </div>
+        <div class="flex items-center gap-4">
+          <span class="text-sm text-gray-700"><%= Current.session.user.email_address %></span>
+          <%= button_to "Sign out", session_path, method: :delete, class: "text-sm text-gray-600 hover:text-gray-900 underline" %>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <!-- Images Card -->
+      <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-xl font-semibold text-gray-900">Images</h2>
+          <span class="text-3xl">🖼️</span>
+        </div>
+        <p class="text-gray-600 text-sm mb-4">Upload and share images with short URLs</p>
+        <div class="text-gray-400 text-sm">Coming soon</div>
+      </div>
+
+      <!-- Bookmarks Card -->
+      <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-xl font-semibold text-gray-900">Bookmarks</h2>
+          <span class="text-3xl">🔖</span>
+        </div>
+        <p class="text-gray-600 text-sm mb-4">Save and organise web links with tags</p>
+        <div class="text-gray-400 text-sm">Coming soon</div>
+      </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Stats</h3>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <p class="text-sm text-gray-600">Total Images</p>
+          <p class="text-2xl font-bold text-gray-900">0</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-600">Total Bookmarks</p>
+          <p class="text-2xl font-bold text-gray-900">0</p>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
