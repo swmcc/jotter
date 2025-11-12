@@ -4,6 +4,9 @@ Rails.application.routes.draw do
 
   get "dashboard", to: "dashboard#index"
 
+  # Bookmarks
+  resources :bookmarks
+
   # Short URL redirects
   get "x/:short_code", to: "short_urls#show", as: :short_url
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

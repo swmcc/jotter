@@ -29,14 +29,19 @@
       </div>
 
       <!-- Bookmarks Card -->
-      <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
-        <div class="flex items-center justify-between mb-4">
-          <h2 class="text-xl font-semibold text-gray-900">Bookmarks</h2>
-          <span class="text-3xl">🔖</span>
+      <%= link_to bookmarks_path, class: "block" do %>
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-xl font-semibold text-gray-900">Bookmarks</h2>
+            <span class="text-3xl">🔖</span>
+          </div>
+          <p class="text-gray-600 text-sm mb-4">Save and organise web links with tags</p>
+          <div class="flex items-center justify-between">
+            <span class="text-blue-600 font-medium text-sm">View all →</span>
+            <span class="text-2xl font-bold text-gray-900"><%= @bookmarks_count %></span>
+          </div>
         </div>
-        <p class="text-gray-600 text-sm mb-4">Save and organise web links with tags</p>
-        <div class="text-gray-400 text-sm">Coming soon</div>
-      </div>
+      <% end %>
     </div>
 
     <!-- Quick Stats -->
@@ -49,7 +54,7 @@
         </div>
         <div>
           <p class="text-sm text-gray-600">Total Bookmarks</p>
-          <p class="text-2xl font-bold text-gray-900">0</p>
+          <p class="text-2xl font-bold text-gray-900"><%= @bookmarks_count %></p>
         </div>
       </div>
     </div>

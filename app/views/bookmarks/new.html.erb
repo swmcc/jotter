@@ -1,0 +1,35 @@
+<div class="min-h-screen bg-gray-50">
+  <!-- Header -->
+  <header class="bg-white border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <%= link_to dashboard_path, class: "hover:opacity-70" do %>
+            <h1 class="text-2xl font-bold text-gray-900">Jotter</h1>
+          <% end %>
+        </div>
+        <div class="flex items-center gap-4">
+          <span class="text-sm text-gray-700"><%= Current.session.user.email_address %></span>
+          <%= button_to "Sign out", session_path, method: :delete, class: "text-sm text-gray-600 hover:text-gray-900 underline" %>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Back Link -->
+    <div class="mb-6">
+      <%= link_to bookmarks_path, class: "text-gray-600 hover:text-gray-900 flex items-center gap-2" do %>
+        <span>←</span>
+        <span>Back to Bookmarks</span>
+      <% end %>
+    </div>
+
+    <!-- Form Card -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+      <h2 class="text-2xl font-bold text-gray-900 mb-6">New Bookmark</h2>
+      <%= render "form", bookmark: @bookmark %>
+    </div>
+  </main>
+</div>
