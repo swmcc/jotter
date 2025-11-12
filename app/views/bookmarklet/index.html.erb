@@ -1,0 +1,84 @@
+<div class="min-h-screen bg-gray-50">
+  <!-- Header -->
+  <header class="bg-white border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <%= link_to root_path, class: "hover:opacity-70" do %>
+            <h1 class="text-4xl">📓</h1>
+          <% end %>
+        </div>
+        <div class="flex items-center gap-4">
+          <% if authenticated? %>
+            <span class="text-sm text-gray-700"><%= Current.session.user.email_address %></span>
+            <%= button_to "Sign out", session_path, method: :delete, class: "text-sm text-gray-600 hover:text-gray-900 underline" %>
+          <% else %>
+            <%= link_to "Sign in", new_session_path, class: "text-sm text-blue-600 hover:text-blue-900 underline" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+      <h2 class="text-4xl font-bold text-gray-900 mb-6">Browser Bookmarklet</h2>
+
+      <div class="prose prose-gray max-w-none">
+        <p class="text-lg text-gray-700 mb-6">
+          Save any webpage to your Jotter with one click! Install this bookmarklet in your browser.
+        </p>
+
+        <h3 class="text-2xl font-semibold text-gray-900 mb-4">How to Install</h3>
+
+        <ol class="list-decimal list-inside space-y-3 mb-8 text-gray-700">
+          <li>Show your browser's bookmarks bar (Cmd+Shift+B on Mac, Ctrl+Shift+B on Windows)</li>
+          <li>Drag the button below to your bookmarks bar</li>
+          <li>When you're on a page you want to save, click the "Add to Jotter" bookmark</li>
+        </ol>
+
+        <div class="my-8 p-6 bg-blue-50 border-2 border-blue-200 rounded-lg text-center">
+          <p class="text-sm text-gray-600 mb-3">Drag this button to your bookmarks bar:</p>
+          <a href="javascript:(function(){var%20url=encodeURIComponent(window.location.href);var%20title=encodeURIComponent(document.title);var%20desc=encodeURIComponent(window.getSelection().toString().substring(0,500));window.location.href='<%= @bookmarklet_url %>?url='+url+'&title='+title+'&description='+desc;})();"
+             class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg text-lg cursor-move">
+            📓 Add to Jotter
+          </a>
+        </div>
+
+        <div class="bg-gray-50 border border-gray-200 rounded p-4 mb-8">
+          <h4 class="font-semibold text-gray-900 mb-2">What it does:</h4>
+          <ul class="list-disc list-inside space-y-1 text-sm text-gray-700">
+            <li>Captures the current page URL and title</li>
+            <li>If you have text selected, it uses that as the description</li>
+            <li>Opens the "New Bookmark" form with everything pre-filled</li>
+            <li>You can edit the details and add tags before saving</li>
+          </ul>
+        </div>
+
+        <h3 class="text-2xl font-semibold text-gray-900 mb-4">Alternative: Manual Installation</h3>
+
+        <p class="text-gray-700 mb-3">If drag-and-drop doesn't work, you can manually create the bookmark:</p>
+
+        <ol class="list-decimal list-inside space-y-3 mb-6 text-gray-700">
+          <li>Right-click your bookmarks bar and select "Add page" or "Add bookmark"</li>
+          <li>Name it "Add to Jotter" (or whatever you like)</li>
+          <li>Copy the code below and paste it as the URL</li>
+        </ol>
+
+        <div class="bg-gray-900 rounded p-4 mb-8">
+          <code class="text-xs text-green-400 break-all block" id="bookmarklet-code">javascript:(function(){var%20url=encodeURIComponent(window.location.href);var%20title=encodeURIComponent(document.title);var%20desc=encodeURIComponent(window.getSelection().toString().substring(0,500));window.location.href='<%= @bookmarklet_url %>?url='+url+'&title='+title+'&description='+desc;})();</code>
+        </div>
+
+        <button onclick="navigator.clipboard.writeText(document.getElementById('bookmarklet-code').textContent); this.textContent='Copied!'; setTimeout(() => this.textContent='Copy Code', 1000)"
+                class="mb-8 bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded">
+          Copy Code
+        </button>
+      </div>
+
+      <div class="mt-8 pt-8 border-t border-gray-200">
+        <%= link_to "← Back to Home", root_path, class: "text-blue-600 hover:text-blue-800 underline" %>
+      </div>
+    </div>
+  </main>
+</div>

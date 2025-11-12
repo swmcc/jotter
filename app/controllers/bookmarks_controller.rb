@@ -32,7 +32,11 @@ class BookmarksController < ApplicationController
   end
 
   def new
-    @bookmark = Current.session.user.bookmarks.build
+    @bookmark = Current.session.user.bookmarks.build(
+      title: params[:title],
+      url: params[:url],
+      description: params[:description]
+    )
   end
 
   def create
