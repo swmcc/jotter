@@ -33,18 +33,20 @@
           <%= image_tag @photo.large, class: "w-full h-auto rounded" %>
         </div>
 
-        <div class="mt-4 bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-          <h3 class="font-semibold text-gray-900 mb-2">Short URL</h3>
-          <div class="flex items-center gap-3">
-            <code class="flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-gray-900">
-              <%= media_short_url_url(@photo.short_code) %>
-            </code>
-            <button onclick="navigator.clipboard.writeText('<%= media_short_url_url(@photo.short_code) %>')" class="rounded bg-gray-600 hover:bg-gray-700 px-4 py-2 text-white text-sm font-medium transition-colors">
-              Copy
-            </button>
+        <% if @photo.is_public %>
+          <div class="mt-4 bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+            <h3 class="font-semibold text-gray-900 mb-2">Short URL</h3>
+            <div class="flex items-center gap-3">
+              <code class="flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-gray-900">
+                <%= media_short_url_url(@photo.short_code) %>
+              </code>
+              <button onclick="navigator.clipboard.writeText('<%= media_short_url_url(@photo.short_code) %>')" class="rounded bg-gray-600 hover:bg-gray-700 px-4 py-2 text-white text-sm font-medium transition-colors">
+                Copy
+              </button>
+            </div>
+            <p class="text-xs text-gray-500 mt-2">Share this URL for instant image preview in Slack, Discord, etc.</p>
           </div>
-          <p class="text-xs text-gray-500 mt-2">Share this URL for instant image preview in Slack, Discord, etc.</p>
-        </div>
+        <% end %>
       </div>
 
       <div class="lg:col-span-1">
