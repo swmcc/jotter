@@ -7,10 +7,9 @@ class Photo < ApplicationRecord
 
   validates :title, presence: true
   validates :short_code, presence: true, uniqueness: true
-  validates :image, presence: true,
-                    content_type: { in: ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'],
-                                   message: 'must be a JPEG, PNG, GIF, or WebP image' },
-                    size: { less_than: 10.megabytes, message: 'must be less than 10MB' }
+  validate :image_presence
+  validate :image_format
+  validate :image_size
 
   before_validation :generate_short_code, on: :create
 
@@ -48,6 +47,27 @@ class Photo < ApplicationRecord
     loop do
       self.short_code = SecureRandom.alphanumeric(6)
       break unless Photo.exists?(short_code: short_code)
+    end
+  end
+
+  def image_presence
+    errors.add(:image, "must be attached") unless image.attached?
+  end
+
+  def image_format
+    return unless image.attached?
+
+    acceptable_types = ["image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp"]
+    unless acceptable_types.include?(image.content_type)
+      errors.add(:image, "must be a JPEG, PNG, GIF, or WebP image")
+    end
+  end
+
+  def image_size
+    return unless image.attached?
+
+    if image.blob.byte_size > 10.megabytes
+      errors.add(:image, "must be less than 10MB")
     end
   end
 end
