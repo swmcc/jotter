@@ -1,4 +1,33 @@
-<div>
-  <h1 class="font-bold text-4xl">Galleries#edit</h1>
-  <p>Find me in app/views/galleries/edit.html.erb</p>
+<div class="min-h-screen bg-gray-50 flex flex-col">
+  <header class="bg-white border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <%= link_to root_path, class: "hover:opacity-70" do %>
+            <h1 class="text-4xl">📓</h1>
+          <% end %>
+        </div>
+        <div class="flex items-center gap-4">
+          <span class="text-sm text-gray-700"><%= Current.session.user.email_address %></span>
+          <%= button_to "Sign out", session_path, method: :delete, class: "text-sm text-gray-600 hover:text-gray-900 underline" %>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="mb-6">
+      <%= link_to gallery_path(@gallery), class: "text-gray-600 hover:text-gray-900 flex items-center gap-2" do %>
+        <span>←</span>
+        <span>Back to Gallery</span>
+      <% end %>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+      <h2 class="text-2xl font-bold text-gray-900 mb-6">Edit Gallery</h2>
+      <%= render "form", gallery: @gallery %>
+    </div>
+  </main>
+
+  <%= render "shared/footer" %>
 </div>

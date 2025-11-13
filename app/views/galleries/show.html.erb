@@ -1,4 +1,109 @@
-<div>
-  <h1 class="font-bold text-4xl">Galleries#show</h1>
-  <p>Find me in app/views/galleries/show.html.erb</p>
+<div class="min-h-screen bg-gray-50 flex flex-col">
+  <!-- Header -->
+  <header class="bg-white border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <%= link_to root_path, class: "hover:opacity-70" do %>
+            <h1 class="text-4xl">📓</h1>
+          <% end %>
+        </div>
+        <div class="flex items-center gap-4">
+          <% if authenticated? %>
+            <span class="text-sm text-gray-700"><%= Current.session.user.email_address %></span>
+            <%= button_to "Sign out", session_path, method: :delete, class: "text-sm text-gray-600 hover:text-gray-900 underline" %>
+          <% else %>
+            <%= link_to "Sign in", new_session_path, class: "text-sm text-blue-600 hover:text-blue-900 underline" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Back Link -->
+    <div class="mb-6">
+      <%= link_to galleries_path, class: "text-gray-600 hover:text-gray-900 flex items-center gap-2" do %>
+        <span>←</span>
+        <span>Back to Galleries</span>
+      <% end %>
+    </div>
+
+    <!-- Gallery Header -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8 mb-6">
+      <div class="flex items-start justify-between mb-4">
+        <div class="flex-1">
+          <h2 class="text-3xl font-bold text-gray-900 mb-2"><%= @gallery.title %></h2>
+          <div class="flex items-center gap-4 text-sm text-gray-500">
+            <span><%= @gallery.is_public ? "🌐 Public" : "🔒 Private" %></span>
+            <span><%= @gallery.created_at.strftime("%d %b %Y") %></span>
+          </div>
+        </div>
+        <% if authenticated? %>
+          <div class="flex gap-2">
+            <%= link_to "Edit", edit_gallery_path(@gallery), class: "rounded bg-gray-200 hover:bg-gray-300 px-3 py-1.5 text-sm text-gray-700 font-medium transition-colors" %>
+            <%= button_to "Delete", gallery_path(@gallery), method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "rounded bg-red-600 hover:bg-red-700 px-3 py-1.5 text-sm text-white font-medium transition-colors" %>
+          </div>
+        <% end %>
+      </div>
+
+      <% if @gallery.description.present? %>
+        <p class="text-gray-700 leading-relaxed mb-4"><%= @gallery.description %></p>
+      <% end %>
+
+      <% if @gallery.tags.any? %>
+        <div class="flex flex-wrap gap-2">
+          <% @gallery.tags.each do |tag| %>
+            <%= link_to tag.name, galleries_path(tag: tag.name), class: "inline-block px-3 py-1 text-sm rounded-full bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors" %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Albums Section -->
+    <div class="mb-6 flex items-center justify-between">
+      <h3 class="text-2xl font-bold text-gray-900">Albums (<%= @albums.count %>)</h3>
+      <% if authenticated? %>
+        <%= link_to "New Album", new_gallery_album_path(@gallery), class: "rounded bg-blue-600 hover:bg-blue-700 px-4 py-2 text-white font-medium transition-colors" %>
+      <% end %>
+    </div>
+
+    <% if @albums.any? %>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <% @albums.each do |album| %>
+          <%= link_to album_path(album), class: "group" do %>
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+              <div class="aspect-square bg-gray-200 relative overflow-hidden">
+                <% if album.cover_photo_or_default&.image&.attached? %>
+                  <%= image_tag album.cover_photo_or_default.thumbnail, class: "w-full h-full object-cover" %>
+                <% else %>
+                  <div class="w-full h-full flex items-center justify-center text-gray-400 text-5xl">
+                    📸
+                  </div>
+                <% end %>
+              </div>
+              <div class="p-3">
+                <h4 class="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors truncate">
+                  <%= album.title %>
+                </h4>
+                <p class="text-xs text-gray-500 mt-1">
+                  <%= album.photos.count %> photos
+                </p>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
+        <p class="text-gray-600">No albums in this gallery yet</p>
+        <% if authenticated? %>
+          <%= link_to "Create your first album", new_gallery_album_path(@gallery), class: "text-blue-600 hover:underline mt-2 inline-block" %>
+        <% end %>
+      </div>
+    <% end %>
+  </main>
+
+  <%= render "shared/footer" %>
 </div>
