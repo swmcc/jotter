@@ -11,6 +11,25 @@ class ShortUrlsController < ApplicationController
       return
     end
 
-    redirect_to @bookmark.url, allow_other_host: true
+    # Validate URL is safe to redirect to (http/https only)
+    # This is validated in the model, but double-check for security
+    if valid_redirect_url?(@bookmark.url)
+      redirect_to @bookmark.url, allow_other_host: true
+    else
+      redirect_to root_path, alert: "That bookmark has an invalid URL. Please contact the administrator."
+    end
+  end
+
+  private
+
+  def valid_redirect_url?(url)
+    return false if url.blank?
+
+    begin
+      uri = URI.parse(url)
+      uri.is_a?(URI::HTTP) || uri.is_a?(URI::HTTPS)
+    rescue URI::InvalidURIError
+      false
+    end
   end
 end
