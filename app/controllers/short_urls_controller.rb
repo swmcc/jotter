@@ -21,6 +21,28 @@ class ShortUrlsController < ApplicationController
     end
   end
 
+  def show_media
+    # Try to find photo, album, or gallery by short_code
+    item = Photo.find_by(short_code: params[:short_code]) ||
+           Album.find_by(short_code: params[:short_code]) ||
+           Gallery.find_by(short_code: params[:short_code])
+
+    unless item && item.is_public
+      redirect_to root_path, alert: "Nice try, but that doesn't exist. Maybe check your typing?"
+      return
+    end
+
+    # For photos, serve the actual image for Slack/social media previews
+    if item.is_a?(Photo)
+      redirect_to rails_blob_path(item.image, disposition: "inline"), allow_other_host: false
+    # For albums and galleries, redirect to their show pages
+    elsif item.is_a?(Album)
+      redirect_to album_path(item)
+    elsif item.is_a?(Gallery)
+      redirect_to gallery_path(item)
+    end
+  end
+
   private
 
   # Validates and returns the URL if it's safe to redirect to, nil otherwise
