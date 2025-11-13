@@ -1,4 +1,101 @@
-<div>
-  <h1 class="font-bold text-4xl">Albums#show</h1>
-  <p>Find me in app/views/albums/show.html.erb</p>
+<div class="min-h-screen bg-gray-50 flex flex-col">
+  <header class="bg-white border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <%= link_to root_path, class: "hover:opacity-70" do %>
+            <h1 class="text-4xl">📓</h1>
+          <% end %>
+        </div>
+        <div class="flex items-center gap-4">
+          <% if authenticated? %>
+            <span class="text-sm text-gray-700"><%= Current.session.user.email_address %></span>
+            <%= button_to "Sign out", session_path, method: :delete, class: "text-sm text-gray-600 hover:text-gray-900 underline" %>
+          <% else %>
+            <%= link_to "Sign in", new_session_path, class: "text-sm text-blue-600 hover:text-blue-900 underline" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="mb-6">
+      <%= link_to @album.gallery ? gallery_path(@album.gallery) : albums_path, class: "text-gray-600 hover:text-gray-900 flex items-center gap-2" do %>
+        <span>←</span>
+        <span><%= @album.gallery ? "Back to Gallery" : "Back to Albums" %></span>
+      <% end %>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8 mb-6">
+      <div class="flex items-start justify-between mb-4">
+        <div class="flex-1">
+          <h2 class="text-3xl font-bold text-gray-900 mb-2"><%= @album.title %></h2>
+          <div class="flex items-center gap-4 text-sm text-gray-500">
+            <span><%= @album.is_public ? "🌐 Public" : "🔒 Private" %></span>
+            <span><%= @album.created_at.strftime("%d %b %Y") %></span>
+            <% if @album.gallery %>
+              <span>•</span>
+              <%= link_to @album.gallery.title, gallery_path(@album.gallery), class: "text-blue-600 hover:underline" %>
+            <% end %>
+          </div>
+        </div>
+        <% if authenticated? %>
+          <div class="flex gap-2">
+            <%= link_to "Edit", edit_album_path(@album), class: "rounded bg-gray-200 hover:bg-gray-300 px-3 py-1.5 text-sm text-gray-700 font-medium transition-colors" %>
+            <%= button_to "Delete", album_path(@album), method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "rounded bg-red-600 hover:bg-red-700 px-3 py-1.5 text-sm text-white font-medium transition-colors" %>
+          </div>
+        <% end %>
+      </div>
+
+      <% if @album.description.present? %>
+        <p class="text-gray-700 leading-relaxed mb-4"><%= @album.description %></p>
+      <% end %>
+
+      <% if @album.tags.any? %>
+        <div class="flex flex-wrap gap-2">
+          <% @album.tags.each do |tag| %>
+            <%= link_to tag.name, albums_path(tag: tag.name), class: "inline-block px-3 py-1 text-sm rounded-full bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors" %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="mb-6 flex items-center justify-between">
+      <h3 class="text-2xl font-bold text-gray-900">Photos (<%= @photos.count %>)</h3>
+      <% if authenticated? %>
+        <%= link_to "Upload Photos", new_album_photo_path(@album), class: "rounded bg-blue-600 hover:bg-blue-700 px-4 py-2 text-white font-medium transition-colors" %>
+      <% end %>
+    </div>
+
+    <% if @photos.any? %>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <% @photos.each do |photo| %>
+          <%= link_to photo_path(photo), class: "group" do %>
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+              <div class="aspect-square bg-gray-200 relative overflow-hidden">
+                <% if photo.image.attached? %>
+                  <%= image_tag photo.thumbnail, class: "w-full h-full object-cover" %>
+                <% end %>
+              </div>
+              <div class="p-2">
+                <p class="text-sm font-medium text-gray-900 group-hover:text-blue-600 transition-colors truncate">
+                  <%= photo.title %>
+                </p>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
+        <p class="text-gray-600">No photos in this album yet</p>
+        <% if authenticated? %>
+          <%= link_to "Upload your first photo", new_album_photo_path(@album), class: "text-blue-600 hover:underline mt-2 inline-block" %>
+        <% end %>
+      </div>
+    <% end %>
+  </main>
+
+  <%= render "shared/footer" %>
 </div>
