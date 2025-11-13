@@ -1,0 +1,86 @@
+<%= form_with(model: photo, class: "space-y-6", data: { controller: "photo-upload" }) do |form| %>
+  <% if photo.errors.any? %>
+    <div class="rounded bg-red-50 border border-red-200 p-4">
+      <h3 class="text-red-800 font-semibold mb-2"><%= pluralize(photo.errors.count, "error") %> prohibited this photo from being saved:</h3>
+      <ul class="list-disc list-inside text-red-700 text-sm">
+        <% photo.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form.hidden_field :album_id %>
+
+  <% unless photo.persisted? %>
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-2">Photo</label>
+
+      <!-- Drag and Drop Zone -->
+      <div
+        data-photo-upload-target="dropzone"
+        class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center transition-colors cursor-pointer hover:border-gray-400"
+        onclick="this.querySelector('input[type=file]').click()">
+
+        <%= form.file_field :image,
+            required: !photo.persisted?,
+            accept: "image/jpeg,image/jpg,image/png,image/gif,image/webp",
+            class: "hidden",
+            data: {
+              photo_upload_target: "input",
+              action: "change->photo-upload#handleFileSelect"
+            } %>
+
+        <div class="space-y-4">
+          <div class="text-6xl">📸</div>
+          <div>
+            <p class="text-gray-700 font-medium">Drop your photo here or click to browse</p>
+            <p class="text-gray-500 text-sm mt-1">JPG, PNG, GIF, or WebP (max 10MB)</p>
+          </div>
+
+          <!-- Preview -->
+          <img data-photo-upload-target="preview" class="hidden mx-auto max-h-64 rounded shadow-lg" />
+
+          <!-- Filename -->
+          <p data-photo-upload-target="filename" class="hidden text-sm text-gray-600 font-mono"></p>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :title, "Title", class: "block text-sm font-medium text-gray-700 mb-2" %>
+    <%= form.text_field :title,
+        required: true,
+        autofocus: true,
+        placeholder: "e.g., Sunset in Paris",
+        class: "block w-full rounded border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none" %>
+  </div>
+
+  <div>
+    <%= form.label :description, "Description", class: "block text-sm font-medium text-gray-700 mb-2" %>
+    <%= form.text_area :description,
+        rows: 3,
+        placeholder: "Describe this photo...",
+        class: "block w-full rounded border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none" %>
+  </div>
+
+  <div>
+    <%= form.label :tag_list, "Tags", class: "block text-sm font-medium text-gray-700 mb-2" %>
+    <%= form.text_field :tag_list,
+        value: photo.tag_list,
+        placeholder: "sunset, paris, travel (comma-separated)",
+        class: "block w-full rounded border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none" %>
+    <p class="text-xs text-gray-500 mt-1">Separate tags with commas</p>
+  </div>
+
+  <div class="flex items-center gap-3">
+    <%= form.check_box :is_public, class: "rounded border-gray-300 text-blue-600 focus:ring-blue-500" %>
+    <%= form.label :is_public, "Make this photo public", class: "text-sm font-medium text-gray-700" %>
+  </div>
+
+  <div class="flex gap-3">
+    <%= form.submit photo.persisted? ? "Update Photo" : "Upload Photo", class: "rounded bg-blue-600 hover:bg-blue-700 px-4 py-2 text-white font-medium cursor-pointer transition-colors" %>
+    <%= link_to "Cancel", photo.persisted? ? photo_path(photo) : (photo.album ? album_path(photo.album) : photos_path), class: "rounded bg-gray-200 hover:bg-gray-300 px-4 py-2 text-gray-700 font-medium transition-colors" %>
+  </div>
+<% end %>
