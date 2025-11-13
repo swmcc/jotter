@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  # Quick upload
+  get "u", to: "uploads#new", as: :uploads
+  post "u", to: "uploads#create"
+
   resource :session
   resources :passwords, param: :token
 
