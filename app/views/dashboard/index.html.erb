@@ -20,15 +20,20 @@
   <!-- Main Content -->
   <main class="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-      <!-- Images Card -->
-      <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
-        <div class="flex items-center justify-between mb-4">
-          <h2 class="text-xl font-semibold text-gray-900">Images</h2>
-          <span class="text-3xl">🖼️</span>
+      <!-- Galleries Card -->
+      <%= link_to galleries_path, class: "block" do %>
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-xl font-semibold text-gray-900">Galleries</h2>
+            <span class="text-3xl">🖼️</span>
+          </div>
+          <p class="text-gray-600 text-sm mb-4">Organize photos into albums and galleries</p>
+          <div class="flex items-center justify-between">
+            <span class="text-blue-600 font-medium text-sm">View all →</span>
+            <span class="text-2xl font-bold text-gray-900"><%= @galleries_count %></span>
+          </div>
         </div>
-        <p class="text-gray-600 text-sm mb-4">Upload and share images with short URLs</p>
-        <div class="text-gray-400 text-sm">Coming soon</div>
-      </div>
+      <% end %>
 
       <!-- Bookmarks Card -->
       <%= link_to bookmarks_path, class: "block" do %>
@@ -57,13 +62,21 @@
     <!-- Quick Stats -->
     <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
       <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Stats</h3>
-      <div class="grid grid-cols-2 gap-4">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div>
-          <p class="text-sm text-gray-600">Total Images</p>
-          <p class="text-2xl font-bold text-gray-900">0</p>
+          <p class="text-sm text-gray-600">Galleries</p>
+          <p class="text-2xl font-bold text-gray-900"><%= @galleries_count %></p>
         </div>
         <div>
-          <p class="text-sm text-gray-600">Total Bookmarks</p>
+          <p class="text-sm text-gray-600">Albums</p>
+          <p class="text-2xl font-bold text-gray-900"><%= @albums_count %></p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-600">Photos</p>
+          <p class="text-2xl font-bold text-gray-900"><%= @photos_count %></p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-600">Bookmarks</p>
           <p class="text-2xl font-bold text-gray-900"><%= @bookmarks_count %></p>
         </div>
       </div>
