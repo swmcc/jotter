@@ -30,12 +30,24 @@
           Jotter is a personal project by <%= link_to "Stephen McCullough (swmcc)", "https://swmcc.github.io", class: "text-blue-600 hover:text-blue-800 underline", target: "_blank", rel: "noopener" %>.
         </p>
 
+        <h3 class="text-2xl font-semibold text-gray-900 mb-4 mt-8">Bookmarks</h3>
+
         <p class="text-gray-700 mb-6">
           I built this as a way to keep interesting bookmarks on my own server, where I own the data and don't have to rely on third-party apps. Remember <%= link_to "Delicious", "https://en.wikipedia.org/wiki/Delicious_(website)", class: "text-blue-600 hover:text-blue-800 underline", target: "_blank", rel: "noopener" %>? It was brilliant until Yahoo bought it and it eventually disappeared, taking everyone's carefully curated bookmarks with it. Never again.
         </p>
 
         <p class="text-gray-700 mb-8">
           With Jotter, my bookmarks live on my own infrastructure. They're mine, they're private (unless I choose to share them), and they'll be here as long as I want them to be.
+        </p>
+
+        <h3 class="text-2xl font-semibold text-gray-900 mb-4 mt-8">Images</h3>
+
+        <p class="text-gray-700 mb-6">
+          The same philosophy applies to images. Remember <%= link_to "Twitpic", "https://en.wikipedia.org/wiki/Twitpic", class: "text-blue-600 hover:text-blue-800 underline", target: "_blank", rel: "noopener" %>? Millions of images, documenting everything from Arab Spring protests to everyday moments, all gone when the service shut down in 2014. Imgur, Photobucket, Flickr – they've all had their moments of instability, changing terms, or just disappearing entirely. Your memories shouldn't be at the mercy of someone else's business model.
+        </p>
+
+        <p class="text-gray-700 mb-8">
+          Jotter includes full image hosting with galleries, albums, and quick uploads. Everything processes in the background so uploads are fast. Public photos get short URLs (like /c/abc123) perfect for sharing on Slack or Discord. Private photos stay truly private – no short URLs, no accidental leaks. Just your images, on your server, under your control.
         </p>
 
         <div class="mt-8 pt-8 border-t border-gray-200">
@@ -49,10 +61,7 @@
               <strong>Deployed on:</strong> My own server (because that's the whole point)
             </p>
             <p>
-              <strong>Features:</strong> Bookmark management, tagging, public/private visibility, short URLs, and a browser bookmarklet for one-click saving
-            </p>
-            <p>
-              <strong>Coming soon:</strong> Image hosting and sharing (same philosophy – own your data)
+              <strong>Features:</strong> Bookmark management with browser bookmarklet, image galleries and albums with drag-and-drop uploads, tagging, public/private visibility, short URLs with Slack/Discord preview support, and background image processing
             </p>
             <p>
               <strong>Source code:</strong> <%= link_to "🐙 Available on GitHub", "https://github.com/swmcc/jotter", class: "text-blue-600 hover:text-blue-800 underline", target: "_blank", rel: "noopener" %>
