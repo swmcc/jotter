@@ -10,9 +10,9 @@
     <!-- Main Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
       <!-- Bookmarks Card -->
-      <%= link_to bookmarks_path, class: "block group" do %>
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-12 hover:shadow-lg hover:border-blue-300 transition-all duration-200">
-          <div class="text-center">
+      <%= link_to bookmarks_path, class: "block group h-full" do %>
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-12 hover:shadow-lg hover:border-blue-300 transition-all duration-200 h-full flex items-center">
+          <div class="text-center w-full">
             <div class="text-8xl mb-6">🔖</div>
             <h2 class="text-3xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">Bookmarks</h2>
             <p class="text-gray-600">Browse the public collection (we promise they're interesting)</p>
@@ -21,9 +21,9 @@
       <% end %>
 
       <!-- Galleries Card -->
-      <%= link_to galleries_path, class: "block group" do %>
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-12 hover:shadow-lg hover:border-blue-300 transition-all duration-200">
-          <div class="text-center">
+      <%= link_to galleries_path, class: "block group h-full" do %>
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-12 hover:shadow-lg hover:border-blue-300 transition-all duration-200 h-full flex items-center">
+          <div class="text-center w-full">
             <div class="text-8xl mb-6">🖼️</div>
             <h2 class="text-3xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">Galleries</h2>
             <p class="text-gray-600">Explore photo galleries and albums</p>
