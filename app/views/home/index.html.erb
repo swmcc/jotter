@@ -20,15 +20,16 @@
         </div>
       <% end %>
 
-      <!-- Images Card (Coming Soon) -->
-      <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-12 opacity-50">
-        <div class="text-center">
-          <div class="text-8xl mb-6">🖼️</div>
-          <h2 class="text-3xl font-bold text-gray-900 mb-3">Images</h2>
-          <p class="text-gray-600">Upload and share with short URLs</p>
-          <p class="text-sm text-gray-400 mt-4">Coming soon</p>
+      <!-- Galleries Card -->
+      <%= link_to galleries_path, class: "block group" do %>
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-12 hover:shadow-lg hover:border-blue-300 transition-all duration-200">
+          <div class="text-center">
+            <div class="text-8xl mb-6">🖼️</div>
+            <h2 class="text-3xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">Galleries</h2>
+            <p class="text-gray-600">Explore photo galleries and albums</p>
+          </div>
         </div>
-      </div>
+      <% end %>
     </div>
 
     <!-- Sign In Link -->
