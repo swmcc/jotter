@@ -1,5 +1,9 @@
 #!/usr/bin/env ruby
 
+# Fix for macOS fork() crash
+# See: https://github.com/basecamp/solid_queue/issues/56
+ENV['OBJC_DISABLE_INITIALIZE_FORK_SAFETY'] = 'YES' if RUBY_PLATFORM.include?('darwin')
+
 require_relative "../config/environment"
 require "solid_queue/cli"
 
