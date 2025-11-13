@@ -61,11 +61,81 @@
       <% end %>
     </div>
 
-    <div class="mb-6 flex items-center justify-between">
+    <% if authenticated? %>
+      <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+        <h3 class="text-xl font-bold text-gray-900 mb-4">Upload Photo</h3>
+
+        <%= form_with(model: [@album, @album.photos.build], class: "space-y-4", data: { controller: "photo-upload" }) do |form| %>
+          <%= form.hidden_field :album_id, value: @album.id %>
+
+          <!-- Drag and Drop Zone -->
+          <div
+            data-photo-upload-target="dropzone"
+            class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center transition-colors cursor-pointer hover:border-gray-400">
+
+            <%= form.file_field :image,
+                required: true,
+                accept: "image/jpeg,image/jpg,image/png,image/gif,image/webp",
+                class: "hidden",
+                data: {
+                  photo_upload_target: "input",
+                  action: "change->photo-upload#handleFileSelect"
+                } %>
+
+            <div class="space-y-3" onclick="this.closest('[data-photo-upload-target=dropzone]').querySelector('input[type=file]').click()">
+              <div class="text-5xl">📸</div>
+              <div>
+                <p class="text-gray-700 font-medium">Drop your photo here or click to browse</p>
+                <p class="text-gray-500 text-sm mt-1">JPG, PNG, GIF, or WebP (max 10MB)</p>
+              </div>
+
+              <!-- Preview -->
+              <img data-photo-upload-target="preview" class="hidden mx-auto max-h-48 rounded shadow-lg" />
+
+              <!-- Filename -->
+              <p data-photo-upload-target="filename" class="hidden text-sm text-gray-600 font-mono"></p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <%= form.label :title, "Title", class: "block text-sm font-medium text-gray-700 mb-2" %>
+              <%= form.text_field :title,
+                  required: true,
+                  placeholder: "e.g., Sunset in Paris",
+                  class: "block w-full rounded border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none" %>
+            </div>
+
+            <div>
+              <%= form.label :tag_list, "Tags", class: "block text-sm font-medium text-gray-700 mb-2" %>
+              <%= form.text_field :tag_list,
+                  placeholder: "sunset, paris (comma-separated)",
+                  class: "block w-full rounded border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none" %>
+            </div>
+          </div>
+
+          <div>
+            <%= form.label :description, "Description (optional)", class: "block text-sm font-medium text-gray-700 mb-2" %>
+            <%= form.text_area :description,
+                rows: 2,
+                placeholder: "Describe this photo...",
+                class: "block w-full rounded border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none" %>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <%= form.check_box :is_public, checked: @album.is_public, class: "rounded border-gray-300 text-blue-600 focus:ring-blue-500" %>
+            <%= form.label :is_public, "Make this photo public", class: "text-sm font-medium text-gray-700" %>
+          </div>
+
+          <div>
+            <%= form.submit "Upload Photo", class: "rounded bg-blue-600 hover:bg-blue-700 px-4 py-2 text-white font-medium cursor-pointer transition-colors" %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+
+    <div class="mb-6">
       <h3 class="text-2xl font-bold text-gray-900">Photos (<%= @photos.count %>)</h3>
-      <% if authenticated? %>
-        <%= link_to "Upload Photos", new_album_photo_path(@album), class: "rounded bg-blue-600 hover:bg-blue-700 px-4 py-2 text-white font-medium transition-colors" %>
-      <% end %>
     </div>
 
     <% if @photos.any? %>

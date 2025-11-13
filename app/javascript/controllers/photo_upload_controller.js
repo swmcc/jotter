@@ -9,25 +9,33 @@ export default class extends Controller {
 
   bindEvents() {
     const dropzone = this.dropzoneTarget
-    
-    ["dragenter", "dragover", "dragleave", "drop"].forEach(eventName => {
-      dropzone.addEventListener(eventName, this.preventDefaults, false)
+
+    // Prevent default drag behaviors
+    ;["dragenter", "dragover", "dragleave", "drop"].forEach(eventName => {
+      dropzone.addEventListener(eventName, (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+      }, false)
     })
 
-    ["dragenter", "dragover"].forEach(eventName => {
-      dropzone.addEventListener(eventName, () => this.highlight(), false)
+    // Highlight drop zone when item is dragged over it
+    ;["dragenter", "dragover"].forEach(eventName => {
+      dropzone.addEventListener(eventName, () => {
+        this.highlight()
+      }, false)
     })
 
-    ["dragleave", "drop"].forEach(eventName => {
-      dropzone.addEventListener(eventName, () => this.unhighlight(), false)
+    // Unhighlight when dragging out
+    ;["dragleave", "drop"].forEach(eventName => {
+      dropzone.addEventListener(eventName, () => {
+        this.unhighlight()
+      }, false)
     })
 
-    dropzone.addEventListener("drop", (e) => this.handleDrop(e), false)
-  }
-
-  preventDefaults(e) {
-    e.preventDefault()
-    e.stopPropagation()
+    // Handle dropped files
+    dropzone.addEventListener("drop", (e) => {
+      this.handleDrop(e)
+    }, false)
   }
 
   highlight() {
@@ -52,7 +60,7 @@ export default class extends Controller {
   handleFiles(files) {
     if (files.length > 0) {
       const file = files[0]
-      
+
       // Update filename display
       if (this.hasFilenameTarget) {
         this.filenameTarget.textContent = file.name
@@ -63,8 +71,10 @@ export default class extends Controller {
       if (file.type.startsWith("image/")) {
         const reader = new FileReader()
         reader.onload = (e) => {
-          this.previewTarget.src = e.target.result
-          this.previewTarget.classList.remove("hidden")
+          if (this.hasPreviewTarget) {
+            this.previewTarget.src = e.target.result
+            this.previewTarget.classList.remove("hidden")
+          }
         }
         reader.readAsDataURL(file)
       }
