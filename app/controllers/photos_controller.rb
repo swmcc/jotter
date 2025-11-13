@@ -44,7 +44,13 @@ class PhotosController < ApplicationController
     if @photo.save
       # Process image variants in background
       ProcessPhotoJob.perform_later(@photo.id)
-      redirect_to @photo, notice: "Photo was successfully uploaded."
+
+      # Redirect to album if photo belongs to one, otherwise to photos index
+      if @photo.album
+        redirect_to @photo.album, notice: "Photo uploaded! Processing in background..."
+      else
+        redirect_to photos_path, notice: "Photo uploaded! Processing in background..."
+      end
     else
       render :new, status: :unprocessable_entity
     end
