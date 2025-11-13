@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_13_221029) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_13_221112) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -83,6 +83,20 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_13_221029) do
     t.index ["user_id"], name: "index_galleries_on_user_id"
   end
 
+  create_table "photos", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "description"
+    t.boolean "is_public", default: false, null: false
+    t.string "short_code", null: false
+    t.bigint "user_id", null: false
+    t.bigint "album_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["album_id"], name: "index_photos_on_album_id"
+    t.index ["short_code"], name: "index_photos_on_short_code", unique: true
+    t.index ["user_id"], name: "index_photos_on_user_id"
+  end
+
   create_table "sessions", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "ip_address"
@@ -123,6 +137,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_13_221029) do
   add_foreign_key "albums", "users"
   add_foreign_key "bookmarks", "users"
   add_foreign_key "galleries", "users"
+  add_foreign_key "photos", "albums"
+  add_foreign_key "photos", "users"
   add_foreign_key "sessions", "users"
   add_foreign_key "taggings", "tags"
 end
