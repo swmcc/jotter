@@ -9,8 +9,20 @@ Rails.application.routes.draw do
   # Bookmarks
   resources :bookmarks
 
+  # Galleries, Albums, and Photos
+  resources :galleries do
+    resources :albums, only: [:new, :create], shallow: true
+  end
+
+  resources :albums, except: [:new, :create] do
+    resources :photos, only: [:new, :create], shallow: true
+  end
+
+  resources :photos, except: [:new, :create]
+
   # Short URL redirects
   get "x/:short_code", to: "short_urls#show", as: :short_url
+  get "c/:short_code", to: "short_urls#show_media", as: :media_short_url
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
