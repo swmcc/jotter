@@ -1,5 +1,14 @@
 class UploadsController < ApplicationController
-  before_action :require_authentication
+  before_action :require_authentication, except: [:index]
+
+  def index
+    # Show all public photos from "Uploads" albums
+    uploads_albums = Album.where(title: "Uploads")
+    @photos = Photo.where(album: uploads_albums, is_public: true)
+                   .includes(:tags)
+                   .with_attached_image
+                   .order(created_at: :desc)
+  end
 
   def new
     @photo = Photo.new

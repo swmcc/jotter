@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   # Quick upload
+  get "u/view", to: "uploads#index", as: :view_uploads
   get "u", to: "uploads#new", as: :uploads
   post "u", to: "uploads#create"
 
