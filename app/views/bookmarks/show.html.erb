@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-gray-50">
+<div class="min-h-screen bg-gray-50 flex flex-col">
   <!-- Header -->
   <header class="bg-white border-b border-gray-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -21,7 +21,7 @@
   </header>
 
   <!-- Main Content -->
-  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <main class="flex-1 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <!-- Back Link -->
     <div class="mb-6">
       <%= link_to bookmarks_path, class: "text-gray-600 hover:text-gray-900 flex items-center gap-2" do %>
@@ -102,4 +102,6 @@
       </div>
     </div>
   </main>
+
+  <%= render "shared/footer" %>
 </div>

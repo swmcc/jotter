@@ -1,4 +1,5 @@
-<div class="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+<div class="min-h-screen bg-gray-50 flex flex-col">
+<div class="flex-1 flex items-center justify-center px-4">
   <div class="max-w-4xl w-full">
     <!-- Header -->
     <div class="text-center mb-12">
@@ -39,9 +40,8 @@
       <% end %>
     </div>
 
-    <!-- Footer -->
-    <div class="mt-12 text-center text-sm text-gray-500">
-      <p>Made with ❤️ by <%= link_to "swmcc", about_path, class: "text-blue-600 hover:text-blue-800 underline" %></p>
-    </div>
   </div>
+</div>
+
+<%= render "shared/footer" %>
 </div>
