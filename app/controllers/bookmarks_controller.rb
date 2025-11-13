@@ -1,6 +1,6 @@
 class BookmarksController < ApplicationController
-  allow_unauthenticated_access only: [:index, :show]
-  before_action :set_bookmark, only: [:show, :edit, :update, :destroy]
+  allow_unauthenticated_access only: [ :index, :show ]
+  before_action :set_bookmark, only: [ :show, :edit, :update, :destroy ]
 
   def index
     # Show all bookmarks if logged in, only public if not
@@ -10,7 +10,7 @@ class BookmarksController < ApplicationController
       @bookmarks = Bookmark.where(is_public: true).includes(:tags).order(created_at: :desc)
     end
 
-    @tags = Tag.joins(:taggings).where(taggings: { taggable_type: 'Bookmark', taggable_id: @bookmarks.pluck(:id) }).distinct.order(:name)
+    @tags = Tag.joins(:taggings).where(taggings: { taggable_type: "Bookmark", taggable_id: @bookmarks.pluck(:id) }).distinct.order(:name)
 
     # Filter by tag if provided
     if params[:tag].present?
