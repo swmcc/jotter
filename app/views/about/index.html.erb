@@ -26,13 +26,36 @@
       <h2 class="text-4xl font-bold text-gray-900 mb-6">About Jotter</h2>
 
       <div class="prose prose-gray max-w-none">
-        <p class="text-lg text-gray-700 mb-4">
-          This is a placeholder page. More details coming soon!
+        <p class="text-lg text-gray-700 mb-6">
+          Jotter is a personal project by <%= link_to "Stephen McCullough (swmcc)", "https://swmcc.github.io", class: "text-blue-600 hover:text-blue-800 underline", target: "_blank", rel: "noopener" %>.
         </p>
 
-        <p class="text-gray-600">
-          Jotter is a simple way to manage bookmarks and images with short URLs.
+        <p class="text-gray-700 mb-6">
+          I built this as a way to keep interesting bookmarks on my own server, where I own the data and don't have to rely on third-party apps. Remember <%= link_to "Delicious", "https://en.wikipedia.org/wiki/Delicious_(website)", class: "text-blue-600 hover:text-blue-800 underline", target: "_blank", rel: "noopener" %>? It was brilliant until Yahoo bought it and it eventually disappeared, taking everyone's carefully curated bookmarks with it. Never again.
         </p>
+
+        <p class="text-gray-700 mb-8">
+          With Jotter, my bookmarks live on my own infrastructure. They're mine, they're private (unless I choose to share them), and they'll be here as long as I want them to be.
+        </p>
+
+        <div class="mt-8 pt-8 border-t border-gray-200">
+          <h3 class="text-2xl font-semibold text-gray-900 mb-4">Colophon</h3>
+
+          <div class="text-gray-700 space-y-3">
+            <p>
+              <strong>Built with:</strong> Ruby on Rails 8, PostgreSQL, Tailwind CSS v4, and Hotwire
+            </p>
+            <p>
+              <strong>Deployed on:</strong> My own server (because that's the whole point)
+            </p>
+            <p>
+              <strong>Features:</strong> Bookmark management, tagging, public/private visibility, short URLs, and a browser bookmarklet for one-click saving
+            </p>
+            <p>
+              <strong>Coming soon:</strong> Image hosting and sharing (same philosophy – own your data)
+            </p>
+          </div>
+        </div>
       </div>
 
       <div class="mt-8 pt-8 border-t border-gray-200">
