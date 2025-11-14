@@ -28,15 +28,15 @@ class Photo < ApplicationRecord
 
   # Get image variants
   def thumbnail
-    image.variant(resize_to_limit: [200, 200])
+    image.variant(resize_to_limit: [ 200, 200 ])
   end
 
   def medium
-    image.variant(resize_to_limit: [800, 800])
+    image.variant(resize_to_limit: [ 800, 800 ])
   end
 
   def large
-    image.variant(resize_to_limit: [1600, 1600])
+    image.variant(resize_to_limit: [ 1600, 1600 ])
   end
 
   private
@@ -57,7 +57,7 @@ class Photo < ApplicationRecord
   def image_format
     return unless image.attached?
 
-    acceptable_types = ["image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp"]
+    acceptable_types = [ "image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp" ]
     unless acceptable_types.include?(image.content_type)
       errors.add(:image, "must be a JPEG, PNG, GIF, or WebP image")
     end

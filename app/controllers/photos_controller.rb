@@ -1,7 +1,7 @@
 class PhotosController < ApplicationController
-  allow_unauthenticated_access only: [:index, :show]
-  before_action :set_photo, only: [:show, :edit, :update, :destroy]
-  before_action :set_album, only: [:new, :create]
+  allow_unauthenticated_access only: [ :index, :show ]
+  before_action :set_photo, only: [ :show, :edit, :update, :destroy ]
+  before_action :set_album, only: [ :new, :create ]
 
   def index
     if authenticated?
@@ -27,7 +27,7 @@ class PhotosController < ApplicationController
   def show
     unless @photo && (authenticated? || @photo.is_public)
       redirect_to photos_path, alert: "Photo not found or is private."
-      return
+      nil
     end
   end
 
@@ -74,9 +74,9 @@ class PhotosController < ApplicationController
   def set_photo
     @photo = if authenticated?
                Current.session.user.photos.find(params[:id])
-             else
+    else
                Photo.public_photos.find(params[:id])
-             end
+    end
   rescue ActiveRecord::RecordNotFound
     redirect_to photos_path, alert: "Photo not found."
   end

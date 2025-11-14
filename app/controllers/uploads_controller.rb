@@ -29,7 +29,7 @@ class UploadsController < ApplicationController
 
     # Use the uploaded filename as the title if no title provided
     if @photo.title.blank? && @photo.image.attached?
-      @photo.title = @photo.image.filename.to_s.gsub(/\.\w+$/, '').humanize
+      @photo.title = @photo.image.filename.to_s.gsub(/\.\w+$/, "").humanize
     end
 
     if @photo.save

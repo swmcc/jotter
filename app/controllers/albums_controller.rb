@@ -1,7 +1,7 @@
 class AlbumsController < ApplicationController
-  allow_unauthenticated_access only: [:index, :show]
-  before_action :set_album, only: [:show, :edit, :update, :destroy]
-  before_action :set_gallery, only: [:new, :create]
+  allow_unauthenticated_access only: [ :index, :show ]
+  before_action :set_album, only: [ :show, :edit, :update, :destroy ]
+  before_action :set_gallery, only: [ :new, :create ]
 
   def index
     if authenticated?
@@ -68,9 +68,9 @@ class AlbumsController < ApplicationController
   def set_album
     @album = if authenticated?
                Current.session.user.albums.find(params[:id])
-             else
+    else
                Album.public_albums.find(params[:id])
-             end
+    end
   rescue ActiveRecord::RecordNotFound
     redirect_to albums_path, alert: "Album not found."
   end

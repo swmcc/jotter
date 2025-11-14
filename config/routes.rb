@@ -16,14 +16,14 @@ Rails.application.routes.draw do
 
   # Galleries, Albums, and Photos
   resources :galleries do
-    resources :albums, only: [:new, :create], shallow: true
+    resources :albums, only: [ :new, :create ], shallow: true
   end
 
-  resources :albums, except: [:new, :create] do
-    resources :photos, only: [:new, :create], shallow: true
+  resources :albums, except: [ :new, :create ] do
+    resources :photos, only: [ :new, :create ], shallow: true
   end
 
-  resources :photos, except: [:new, :create]
+  resources :photos, except: [ :new, :create ]
 
   # Short URL redirects
   get "x/:short_code", to: "short_urls#show", as: :short_url

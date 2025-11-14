@@ -1,6 +1,6 @@
 class GalleriesController < ApplicationController
-  allow_unauthenticated_access only: [:index, :show]
-  before_action :set_gallery, only: [:show, :edit, :update, :destroy]
+  allow_unauthenticated_access only: [ :index, :show ]
+  before_action :set_gallery, only: [ :show, :edit, :update, :destroy ]
 
   def index
     if authenticated?
@@ -67,9 +67,9 @@ class GalleriesController < ApplicationController
   def set_gallery
     @gallery = if authenticated?
                  Current.session.user.galleries.find(params[:id])
-               else
+    else
                  Gallery.public_galleries.find(params[:id])
-               end
+    end
   rescue ActiveRecord::RecordNotFound
     redirect_to galleries_path, alert: "Gallery not found."
   end
