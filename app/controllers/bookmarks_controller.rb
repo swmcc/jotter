@@ -4,10 +4,11 @@ class BookmarksController < ApplicationController
 
   def index
     # Show all bookmarks if logged in, only public if not
+    sort_order = params[:sort] == "oldest" ? :asc : :desc
     if authenticated?
-      @bookmarks = Current.session.user.bookmarks.includes(:tags).order(created_at: :desc)
+      @bookmarks = Current.session.user.bookmarks.includes(:tags).order(created_at: sort_order)
     else
-      @bookmarks = Bookmark.where(is_public: true).includes(:tags).order(created_at: :desc)
+      @bookmarks = Bookmark.where(is_public: true).includes(:tags).order(created_at: sort_order)
     end
 
     @tags = Tag.joins(:taggings).where(taggings: { taggable_type: "Bookmark", taggable_id: @bookmarks.pluck(:id) }).distinct.order(:name)
