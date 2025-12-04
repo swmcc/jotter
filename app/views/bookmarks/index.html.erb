@@ -38,7 +38,7 @@
 
     <!-- Search and Filter -->
     <div class="mb-6 bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-      <%= form_with url: bookmarks_path, method: :get, class: "flex gap-4" do |f| %>
+      <%= form_with url: bookmarks_path, method: :get, class: "flex gap-4 items-center" do |f| %>
         <div class="flex-1">
           <%= f.text_field :q, placeholder: "Search bookmarks...", value: params[:q], class: "block w-full rounded border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none" %>
         </div>
@@ -46,6 +46,11 @@
         <% if params[:q].present? || params[:tag].present? %>
           <%= link_to "Clear", bookmarks_path, class: "rounded bg-gray-200 hover:bg-gray-300 px-4 py-2 text-gray-700 font-medium transition-colors" %>
         <% end %>
+        <div class="flex items-center gap-1 text-sm border-l border-gray-300 pl-4 ml-2">
+          <span class="text-gray-500">Sort:</span>
+          <%= link_to "Newest", bookmarks_path(q: params[:q], tag: params[:tag], sort: "newest"), class: "px-2 py-1 rounded #{params[:sort] != 'oldest' ? 'bg-gray-200 text-gray-900 font-medium' : 'text-gray-600 hover:text-gray-900'}" %>
+          <%= link_to "Oldest", bookmarks_path(q: params[:q], tag: params[:tag], sort: "oldest"), class: "px-2 py-1 rounded #{params[:sort] == 'oldest' ? 'bg-gray-200 text-gray-900 font-medium' : 'text-gray-600 hover:text-gray-900'}" %>
+        </div>
       <% end %>
     </div>
 
