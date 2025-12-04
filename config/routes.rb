@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   resource :session
   resources :passwords, param: :token
+  resources :api_tokens, only: [ :index, :new, :create, :destroy ]
 
   get "dashboard", to: "dashboard#index"
   get "about", to: "about#index"

@@ -22,12 +22,26 @@ class BookmarksController < ApplicationController
       @bookmarks = @bookmarks.where("title ILIKE ? OR description ILIKE ? OR url ILIKE ?",
                                      "%#{params[:q]}%", "%#{params[:q]}%", "%#{params[:q]}%")
     end
+
+    respond_to do |format|
+      format.html
+      format.json
+    end
   end
 
   def show
     # Allow public bookmarks to be viewed by anyone
     if !authenticated? && !@bookmark.is_public
-      redirect_to bookmarks_path, alert: "This bookmark is private"
+      respond_to do |format|
+        format.html { redirect_to bookmarks_path, alert: "This bookmark is private" }
+        format.json { render json: { error: "Not found" }, status: :not_found }
+      end
+      return
+    end
+
+    respond_to do |format|
+      format.html
+      format.json
     end
   end
 
@@ -43,9 +57,15 @@ class BookmarksController < ApplicationController
     @bookmark = Current.session.user.bookmarks.build(bookmark_params)
 
     if @bookmark.save
-      redirect_to bookmarks_path, notice: "Bookmark created successfully"
+      respond_to do |format|
+        format.html { redirect_to bookmarks_path, notice: "Bookmark created successfully" }
+        format.json { render :show, status: :created }
+      end
     else
-      render :new, status: :unprocessable_entity
+      respond_to do |format|
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: { errors: @bookmark.errors.full_messages }, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -54,15 +74,24 @@ class BookmarksController < ApplicationController
 
   def update
     if @bookmark.update(bookmark_params)
-      redirect_to bookmark_path(@bookmark), notice: "Bookmark updated successfully"
+      respond_to do |format|
+        format.html { redirect_to bookmark_path(@bookmark), notice: "Bookmark updated successfully" }
+        format.json { render :show }
+      end
     else
-      render :edit, status: :unprocessable_entity
+      respond_to do |format|
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: { errors: @bookmark.errors.full_messages }, status: :unprocessable_entity }
+      end
     end
   end
 
   def destroy
     @bookmark.destroy
-    redirect_to bookmarks_path, notice: "Bookmark deleted"
+    respond_to do |format|
+      format.html { redirect_to bookmarks_path, notice: "Bookmark deleted" }
+      format.json { head :no_content }
+    end
   end
 
   private
