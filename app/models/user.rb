@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   has_secure_password
   has_many :sessions, dependent: :destroy
+  has_many :api_tokens, dependent: :destroy
   has_many :bookmarks, dependent: :destroy
   has_many :galleries, dependent: :destroy
   has_many :albums, dependent: :destroy

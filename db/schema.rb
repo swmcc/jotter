@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_13_221112) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_04_133735) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -55,6 +55,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_13_221112) do
     t.index ["gallery_id"], name: "index_albums_on_gallery_id"
     t.index ["short_code"], name: "index_albums_on_short_code", unique: true
     t.index ["user_id"], name: "index_albums_on_user_id"
+  end
+
+  create_table "api_tokens", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "token", null: false
+    t.string "name"
+    t.datetime "last_used_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["token"], name: "index_api_tokens_on_token", unique: true
+    t.index ["user_id"], name: "index_api_tokens_on_user_id"
   end
 
   create_table "bookmarks", force: :cascade do |t|
@@ -135,6 +146,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_13_221112) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "albums", "galleries"
   add_foreign_key "albums", "users"
+  add_foreign_key "api_tokens", "users"
   add_foreign_key "bookmarks", "users"
   add_foreign_key "galleries", "users"
   add_foreign_key "photos", "albums"

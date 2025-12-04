@@ -77,6 +77,14 @@
           </div>
         <% end %>
       </div>
+
+      <%= link_to api_tokens_path, class: "block mt-4" do %>
+        <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 hover:bg-gray-100 transition-colors">
+          <p class="text-sm text-gray-700 text-center">
+            <span class="font-medium">🔑 API Tokens</span> — Manage CLI and API access
+          </p>
+        </div>
+      <% end %>
     </div>
 
     <!-- Quick Stats -->
