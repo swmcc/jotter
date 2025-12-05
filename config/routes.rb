@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
   get "dashboard", to: "dashboard#index"
   get "about", to: "about#index"
+  get "colophon", to: "colophon#index"
   get "bookmarklet", to: "bookmarklet#index"
 
   # Bookmarks
