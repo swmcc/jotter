@@ -5,7 +5,9 @@
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-3">
           <%= link_to root_path, class: "hover:opacity-70" do %>
-            <h1 class="text-4xl">📓</h1>
+            <div class="w-10 h-10 text-gray-800">
+              <%= image_tag "jotter.svg", class: "w-full h-full" %>
+            </div>
           <% end %>
           <p class="text-sm text-gray-600">Images and bookmarks</p>
         </div>
@@ -25,7 +27,9 @@
         <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer">
           <div class="flex items-center justify-between mb-4">
             <h2 class="text-xl font-semibold text-gray-900">Galleries</h2>
-            <span class="text-3xl">🖼️</span>
+            <div class="w-8 h-8 text-gray-700">
+              <%= image_tag "galleries.svg", class: "w-full h-full" %>
+            </div>
           </div>
           <p class="text-gray-600 text-sm mb-4">Organise photos into albums and galleries</p>
           <div class="flex items-center justify-between">
@@ -40,7 +44,9 @@
         <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer">
           <div class="flex items-center justify-between mb-4">
             <h2 class="text-xl font-semibold text-gray-900">Bookmarks</h2>
-            <span class="text-3xl">🔖</span>
+            <div class="w-8 h-8 text-gray-700">
+              <%= image_tag "bookmarks.svg", class: "w-full h-full" %>
+            </div>
           </div>
           <p class="text-gray-600 text-sm mb-4">Save and organise web links with tags</p>
           <div class="flex items-center justify-between">

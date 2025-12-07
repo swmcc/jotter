@@ -3,7 +3,9 @@
   <div class="max-w-4xl w-full">
     <!-- Header -->
     <div class="text-center mb-12">
-      <h1 class="text-8xl mb-3">📓</h1>
+      <div class="w-24 h-24 mx-auto mb-3 text-gray-800">
+        <%= image_tag "jotter.svg", class: "w-full h-full" %>
+      </div>
       <p class="text-xl text-gray-600">swmcc's personal jotter for the web</p>
     </div>
 
@@ -13,7 +15,9 @@
       <%= link_to bookmarks_path, class: "block group h-full" do %>
         <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-12 hover:shadow-lg hover:border-blue-300 transition-all duration-200 h-full flex items-center">
           <div class="text-center w-full">
-            <div class="text-8xl mb-6">🔖</div>
+            <div class="w-20 h-20 mx-auto mb-6 text-gray-700 group-hover:text-blue-600 transition-colors">
+              <%= image_tag "bookmarks.svg", class: "w-full h-full" %>
+            </div>
             <h2 class="text-3xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">Bookmarks</h2>
             <p class="text-gray-600">Browse the public collection (we promise they're interesting)</p>
           </div>
@@ -24,7 +28,9 @@
       <%= link_to galleries_path, class: "block group h-full" do %>
         <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-12 hover:shadow-lg hover:border-blue-300 transition-all duration-200 h-full flex items-center">
           <div class="text-center w-full">
-            <div class="text-8xl mb-6">🖼️</div>
+            <div class="w-20 h-20 mx-auto mb-6 text-gray-700 group-hover:text-blue-600 transition-colors">
+              <%= image_tag "galleries.svg", class: "w-full h-full" %>
+            </div>
             <h2 class="text-3xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">Galleries</h2>
             <p class="text-gray-600">Explore photo galleries and albums</p>
           </div>

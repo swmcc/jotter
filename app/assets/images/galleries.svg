@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Main image frame -->
+  <rect x="8" y="12" width="40" height="40" rx="2" stroke="currentColor" stroke-width="3" fill="none"/>
+  <!-- Stacked frame behind (offset) -->
+  <rect x="16" y="4" width="40" height="40" rx="2" stroke="currentColor" stroke-width="2" fill="none" opacity="0.5"/>
+  <!-- Mountain/landscape in main frame -->
+  <path d="M12 44l10-12 8 8 6-6 8 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Sun in main frame -->
+  <circle cx="38" cy="22" r="4" stroke="currentColor" stroke-width="2" fill="none"/>
+</svg>

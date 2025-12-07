@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Bookmark ribbon -->
+  <path d="M16 6h32v52l-16-12-16 12V6z" stroke="currentColor" stroke-width="3" stroke-linejoin="round" fill="none"/>
+  <!-- Horizontal lines representing saved content -->
+  <path d="M24 18h16M24 26h16M24 34h12" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+</svg>

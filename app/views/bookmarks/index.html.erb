@@ -5,7 +5,9 @@
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-3">
           <%= link_to root_path, class: "hover:opacity-70" do %>
-            <h1 class="text-4xl">📓</h1>
+            <div class="w-10 h-10 text-gray-800">
+              <%= image_tag "jotter.svg", class: "w-full h-full" %>
+            </div>
           <% end %>
           <% unless authenticated? %>
             <p class="text-sm text-gray-600">Public bookmarks</p>
