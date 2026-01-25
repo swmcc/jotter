@@ -35,9 +35,16 @@ class UploadsController < ApplicationController
     if @photo.save
       # Process image variants in background
       ProcessPhotoJob.perform_later(@photo.id)
-      redirect_to uploads_path, notice: "📸 #{@photo.title} uploaded!"
+
+      respond_to do |format|
+        format.html { redirect_to uploads_path, notice: "📸 #{@photo.title} uploaded!" }
+        format.json { render json: photo_json(@photo), status: :created }
+      end
     else
-      render :new, status: :unprocessable_entity
+      respond_to do |format|
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: { errors: @photo.errors.full_messages }, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -51,6 +58,25 @@ class UploadsController < ApplicationController
   end
 
   def photo_params
-    params.require(:photo).permit(:image, :title, :description, :is_public)
+    # Accept params nested under :photo (form submissions) or at root level (API calls)
+    if params[:photo].present?
+      params.require(:photo).permit(:image, :title, :description, :is_public)
+    else
+      params.permit(:image, :title, :description, :is_public)
+    end
+  end
+
+  def photo_json(photo)
+    {
+      photo: {
+        id: photo.id,
+        short_code: photo.short_code,
+        short_url: media_short_url_url(photo.short_code),
+        title: photo.title,
+        description: photo.description,
+        is_public: photo.is_public,
+        created_at: photo.created_at.iso8601
+      }
+    }
   end
 end
