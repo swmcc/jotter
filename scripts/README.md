@@ -72,6 +72,14 @@ Successful uploads return:
 }
 ```
 
+## iOS Shortcut
+
+For iPhone/iPad uploads, see [ios-shortcut-setup.md](ios-shortcut-setup.md).
+
+The shortcut uses the share sheet - share any image and tap "Jotter" to upload.
+
+---
+
 ## Troubleshooting
 
 **"Cannot find jotter-upload script"**
