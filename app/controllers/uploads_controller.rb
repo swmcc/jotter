@@ -23,8 +23,13 @@ class UploadsController < ApplicationController
     # Find or create the "Uploads" album for this user
     uploads_album = find_or_create_uploads_album
 
-    # Build the photo
-    @photo = Current.session.user.photos.build(photo_params)
+    # Build the photo, handling base64 uploads for iOS Shortcuts
+    permitted_params = photo_params
+    if params[:image_base64].present? && permitted_params[:image].blank?
+      permitted_params = permitted_params.merge(image: handle_base64_image)
+    end
+
+    @photo = Current.session.user.photos.build(permitted_params)
     @photo.album = uploads_album
 
     # Use the uploaded filename as the title if no title provided
@@ -62,7 +67,46 @@ class UploadsController < ApplicationController
     if params[:photo].present?
       params.require(:photo).permit(:image, :title, :description, :is_public)
     else
-      params.permit(:image, :title, :description, :is_public)
+      params.permit(:image, :title, :description, :is_public, :image_base64, :filename, :content_type)
+    end
+  end
+
+  # Handle base64-encoded image from JSON body (for iOS Shortcuts)
+  def handle_base64_image
+    return unless params[:image_base64].present?
+
+    # Decode base64 data
+    image_data = Base64.decode64(params[:image_base64])
+    filename = params[:filename] || "upload_#{Time.current.to_i}.jpg"
+    content_type = params[:content_type] || detect_content_type(image_data)
+
+    # Create a temporary file
+    tempfile = Tempfile.new([ "upload", File.extname(filename) ])
+    tempfile.binmode
+    tempfile.write(image_data)
+    tempfile.rewind
+
+    # Build an uploaded file object
+    ActionDispatch::Http::UploadedFile.new(
+      tempfile: tempfile,
+      filename: filename,
+      type: content_type
+    )
+  end
+
+  def detect_content_type(data)
+    # Check magic bytes for common image formats
+    case data[0, 4].bytes
+    when [ 0xFF, 0xD8, 0xFF, 0xE0 ], [ 0xFF, 0xD8, 0xFF, 0xE1 ]
+      "image/jpeg"
+    when [ 0x89, 0x50, 0x4E, 0x47 ]
+      "image/png"
+    when [ 0x47, 0x49, 0x46, 0x38 ]
+      "image/gif"
+    when [ 0x52, 0x49, 0x46, 0x46 ] # WebP starts with RIFF
+      "image/webp"
+    else
+      "image/jpeg" # Default fallback
     end
   end
 
