@@ -1,0 +1,38 @@
+#!/bin/bash
+#
+# Jotter Upload wrapper for macOS app bundle
+# This script is called when files are dropped on the app icon
+#
+
+# Get the directory where this script lives
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+APP_DIR="$(dirname "$(dirname "$SCRIPT_DIR")")"
+
+# Find the jotter-upload script
+# First check if it's in the same directory as the app
+UPLOAD_SCRIPT="$(dirname "$APP_DIR")/jotter-upload"
+
+if [[ ! -x "$UPLOAD_SCRIPT" ]]; then
+    # Try PATH
+    UPLOAD_SCRIPT="$(command -v jotter-upload)"
+fi
+
+if [[ -z "$UPLOAD_SCRIPT" ]] || [[ ! -x "$UPLOAD_SCRIPT" ]]; then
+    osascript -e 'display alert "Jotter Upload Error" message "Cannot find jotter-upload script. Make sure it is in the same folder as this app or in your PATH." as critical'
+    exit 1
+fi
+
+# Check if config exists
+if [[ ! -f "$HOME/.jotter-config" ]]; then
+    osascript -e 'display alert "Jotter Upload Not Configured" message "Please create ~/.jotter-config with your JOTTER_SERVER_URL and JOTTER_API_TOKEN.\n\nSee jotter-config.example for format." as critical'
+    exit 1
+fi
+
+# If no arguments, show usage
+if [[ $# -eq 0 ]]; then
+    osascript -e 'display alert "Jotter Upload" message "Drag and drop image files onto this app to upload them to Jotter.\n\nSupported formats: JPEG, PNG, GIF, WebP" as informational'
+    exit 0
+fi
+
+# Upload each dropped file
+"$UPLOAD_SCRIPT" "$@"

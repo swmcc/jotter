@@ -1,0 +1,102 @@
+#!/bin/bash
+#
+# jotter-upload - Upload images to Jotter
+#
+# Usage:
+#   jotter-upload <image_file> [image_file...]
+#
+# Configuration:
+#   Set these environment variables or create ~/.jotter-config:
+#     JOTTER_SERVER_URL - Your Jotter server URL (e.g., https://jotter.example.com)
+#     JOTTER_API_TOKEN  - Your API token from Jotter settings
+#
+# Example:
+#   export JOTTER_SERVER_URL="https://jotter.example.com"
+#   export JOTTER_API_TOKEN="your-token-here"
+#   jotter-upload screenshot.png
+#
+
+set -e
+
+# Load config file if it exists
+CONFIG_FILE="$HOME/.jotter-config"
+if [[ -f "$CONFIG_FILE" ]]; then
+    source "$CONFIG_FILE"
+fi
+
+# Validate configuration
+if [[ -z "$JOTTER_SERVER_URL" ]]; then
+    echo "Error: JOTTER_SERVER_URL not set" >&2
+    echo "Set it in ~/.jotter-config or as an environment variable" >&2
+    exit 1
+fi
+
+if [[ -z "$JOTTER_API_TOKEN" ]]; then
+    echo "Error: JOTTER_API_TOKEN not set" >&2
+    echo "Set it in ~/.jotter-config or as an environment variable" >&2
+    exit 1
+fi
+
+# Check for arguments
+if [[ $# -eq 0 ]]; then
+    echo "Usage: jotter-upload <image_file> [image_file...]" >&2
+    exit 1
+fi
+
+# Upload each file
+for file in "$@"; do
+    if [[ ! -f "$file" ]]; then
+        echo "Error: File not found: $file" >&2
+        continue
+    fi
+
+    # Check if it's an image
+    mime_type=$(file --brief --mime-type "$file")
+    case "$mime_type" in
+        image/jpeg|image/png|image/gif|image/webp)
+            ;;
+        *)
+            echo "Skipping non-image file: $file ($mime_type)" >&2
+            continue
+            ;;
+    esac
+
+    echo "Uploading: $file"
+
+    # Make the API request
+    response=$(curl -s -w "\n%{http_code}" \
+        -X POST \
+        -H "Authorization: Bearer $JOTTER_API_TOKEN" \
+        -H "Accept: application/json" \
+        -F "image=@$file" \
+        "${JOTTER_SERVER_URL}/u.json")
+
+    # Split response into body and status code
+    http_code=$(echo "$response" | tail -n1)
+    body=$(echo "$response" | sed '$d')
+
+    if [[ "$http_code" == "201" ]]; then
+        # Extract short_url from JSON response
+        short_url=$(echo "$body" | grep -o '"short_url":"[^"]*"' | cut -d'"' -f4)
+        title=$(echo "$body" | grep -o '"title":"[^"]*"' | cut -d'"' -f4)
+
+        echo "Success: $title"
+        echo "URL: $short_url"
+
+        # Copy URL to clipboard (macOS)
+        if command -v pbcopy &> /dev/null; then
+            echo -n "$short_url" | pbcopy
+            echo "(URL copied to clipboard)"
+        fi
+
+        # Show notification (macOS)
+        if command -v osascript &> /dev/null; then
+            osascript -e "display notification \"$short_url\" with title \"Jotter Upload\" subtitle \"$title\" sound name \"Glass\""
+        fi
+    else
+        echo "Error uploading $file (HTTP $http_code):" >&2
+        echo "$body" >&2
+    fi
+
+    echo ""
+done

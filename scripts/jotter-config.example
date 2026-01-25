@@ -1,0 +1,8 @@
+# Jotter Upload Configuration
+# Copy this file to ~/.jotter-config and fill in your values
+#
+# JOTTER_SERVER_URL - Your Jotter server URL (no trailing slash)
+# JOTTER_API_TOKEN  - Your API token (generate one at /api_tokens in Jotter)
+
+JOTTER_SERVER_URL="https://jotter.example.com"
+JOTTER_API_TOKEN="your-api-token-here"
