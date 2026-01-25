@@ -38,3 +38,6 @@
 
 # Ignore Claude Code configuration
 CLAUDE.md
+
+# Ignore incomplete native app experiments
+/native-apps/
