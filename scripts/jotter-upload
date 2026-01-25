@@ -6,7 +6,7 @@
 #   jotter-upload <image_file> [image_file...]
 #
 # Configuration:
-#   Set these environment variables or create ~/.jotter-config:
+#   Set these environment variables or create ~/.config/jotter/config:
 #     JOTTER_SERVER_URL - Your Jotter server URL (e.g., https://jotter.example.com)
 #     JOTTER_API_TOKEN  - Your API token from Jotter settings
 #
@@ -19,7 +19,7 @@
 set -e
 
 # Load config file if it exists
-CONFIG_FILE="$HOME/.jotter-config"
+CONFIG_FILE="$HOME/.config/jotter/config"
 if [[ -f "$CONFIG_FILE" ]]; then
     source "$CONFIG_FILE"
 fi
@@ -27,13 +27,13 @@ fi
 # Validate configuration
 if [[ -z "$JOTTER_SERVER_URL" ]]; then
     echo "Error: JOTTER_SERVER_URL not set" >&2
-    echo "Set it in ~/.jotter-config or as an environment variable" >&2
+    echo "Set it in ~/.config/jotter/config or as an environment variable" >&2
     exit 1
 fi
 
 if [[ -z "$JOTTER_API_TOKEN" ]]; then
     echo "Error: JOTTER_API_TOKEN not set" >&2
-    echo "Set it in ~/.jotter-config or as an environment variable" >&2
+    echo "Set it in ~/.config/jotter/config or as an environment variable" >&2
     exit 1
 fi
 
