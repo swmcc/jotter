@@ -87,7 +87,7 @@ RSpec.describe "Bookmarks", type: :request do
           }
         }
 
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
       end
 
       it "does not create a bookmark with missing title" do
@@ -152,7 +152,7 @@ RSpec.describe "Bookmarks", type: :request do
           }
         }, as: :json
 
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
         json = JSON.parse(response.body)
         expect(json["errors"]).to be_present
       end

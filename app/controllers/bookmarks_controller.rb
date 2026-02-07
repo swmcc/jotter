@@ -64,8 +64,8 @@ class BookmarksController < ApplicationController
       end
     else
       respond_to do |format|
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: { errors: @bookmark.errors.full_messages }, status: :unprocessable_entity }
+        format.html { render :new, status: :unprocessable_content }
+        format.json { render json: { errors: @bookmark.errors.full_messages }, status: :unprocessable_content }
       end
     end
   end
@@ -81,8 +81,8 @@ class BookmarksController < ApplicationController
       end
     else
       respond_to do |format|
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: { errors: @bookmark.errors.full_messages }, status: :unprocessable_entity }
+        format.html { render :edit, status: :unprocessable_content }
+        format.json { render json: { errors: @bookmark.errors.full_messages }, status: :unprocessable_content }
       end
     end
   end

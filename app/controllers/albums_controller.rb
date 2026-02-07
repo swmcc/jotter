@@ -46,7 +46,7 @@ class AlbumsController < ApplicationController
     if @album.save
       redirect_to @album, notice: "Album was successfully created."
     else
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -54,7 +54,7 @@ class AlbumsController < ApplicationController
     if @album.update(album_params)
       redirect_to @album, notice: "Album was successfully updated."
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 

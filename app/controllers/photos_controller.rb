@@ -52,7 +52,7 @@ class PhotosController < ApplicationController
         redirect_to photos_path, notice: "Photo uploaded! Processing in background..."
       end
     else
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -60,7 +60,7 @@ class PhotosController < ApplicationController
     if @photo.update(photo_params)
       redirect_to @photo, notice: "Photo was successfully updated."
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 

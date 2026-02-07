@@ -47,8 +47,8 @@ class UploadsController < ApplicationController
       end
     else
       respond_to do |format|
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: { errors: @photo.errors.full_messages }, status: :unprocessable_entity }
+        format.html { render :new, status: :unprocessable_content }
+        format.json { render json: { errors: @photo.errors.full_messages }, status: :unprocessable_content }
       end
     end
   end

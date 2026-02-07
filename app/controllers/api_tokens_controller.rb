@@ -17,7 +17,7 @@ class ApiTokensController < ApplicationController
       flash[:new_token] = @api_token.token
       redirect_to api_tokens_path, notice: "API token created successfully. Copy it now - you won't see it again!"
     else
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
