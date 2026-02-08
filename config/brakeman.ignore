@@ -1,0 +1,14 @@
+{
+  "ignored_warnings": [
+    {
+      "fingerprint": "13408f5b3373874a100cd2aa86711925a0e78f396a9aa83582bdb2a2c208682f",
+      "note": "Safe: poster_path is a temp file path we generate, not user input"
+    },
+    {
+      "fingerprint": "2d94f98e942ecd0783e304e3dee306622d4417d557a1abe9dd7b63f581d28fa8",
+      "note": "Safe: transcoded_path is a temp file path we generate, not user input"
+    }
+  ],
+  "updated": "2026-02-08",
+  "brakeman_version": "7.0.0"
+}

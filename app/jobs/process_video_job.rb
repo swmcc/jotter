@@ -32,10 +32,8 @@ class ProcessVideoJob < ApplicationJob
       # Generate poster image
       poster_path = generate_poster(movie, original_path)
       if poster_path && File.exist?(poster_path)
-        # Safe: poster_path is a temp file path we generated, not user input
-        poster_file = File.open(poster_path) # brakeman:disable:FileAccess
         video.poster.attach(
-          io: poster_file,
+          io: File.open(poster_path),
           filename: "#{video.short_code}_poster.jpg",
           content_type: "image/jpeg"
         )
@@ -44,10 +42,8 @@ class ProcessVideoJob < ApplicationJob
       # Transcode to web-friendly format
       transcoded_path = transcode_video(movie, original_path)
       if transcoded_path && File.exist?(transcoded_path)
-        # Safe: transcoded_path is a temp file path we generated, not user input
-        transcoded_file = File.open(transcoded_path) # brakeman:disable:FileAccess
         video.transcoded.attach(
-          io: transcoded_file,
+          io: File.open(transcoded_path),
           filename: "#{video.short_code}.mp4",
           content_type: "video/mp4"
         )
