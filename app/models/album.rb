@@ -2,6 +2,7 @@ class Album < ApplicationRecord
   belongs_to :user
   belongs_to :gallery, optional: true
   has_many :photos, dependent: :destroy
+  has_many :videos, dependent: :destroy
   has_many :taggings, as: :taggable, dependent: :destroy
   has_many :tags, through: :taggings
 

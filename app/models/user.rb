@@ -6,6 +6,7 @@ class User < ApplicationRecord
   has_many :galleries, dependent: :destroy
   has_many :albums, dependent: :destroy
   has_many :photos, dependent: :destroy
+  has_many :videos, dependent: :destroy
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 end

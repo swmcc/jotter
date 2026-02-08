@@ -1,0 +1,81 @@
+<%= form_with(model: video, class: "space-y-6", data: { controller: "video-upload" }) do |form| %>
+  <% if video.errors.any? %>
+    <div class="rounded bg-red-50 border border-red-200 p-4">
+      <h3 class="text-red-800 font-semibold mb-2"><%= pluralize(video.errors.count, "error") %> prohibited this video from being saved:</h3>
+      <ul class="list-disc list-inside text-red-700 text-sm">
+        <% video.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form.hidden_field :album_id %>
+
+  <% unless video.persisted? %>
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-2">Video</label>
+
+      <div
+        data-video-upload-target="dropzone"
+        class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center transition-colors cursor-pointer hover:border-gray-400"
+        onclick="this.querySelector('input[type=file]').click()">
+
+        <%= form.file_field :original,
+            required: !video.persisted?,
+            accept: "video/mp4,video/quicktime,video/x-msvideo,video/mpeg,video/webm,video/x-m4v,video/x-matroska",
+            class: "hidden",
+            data: {
+              video_upload_target: "input",
+              action: "change->video-upload#handleFileSelect"
+            } %>
+
+        <div class="space-y-4">
+          <div class="text-6xl">?</div>
+          <div>
+            <p class="text-gray-700 font-medium">Drop your video here or click to browse</p>
+            <p class="text-gray-500 text-sm mt-1">MP4, MOV, AVI, MPEG, WebM, MKV (max 500MB)</p>
+          </div>
+
+          <p data-video-upload-target="filename" class="hidden text-sm text-gray-600 font-mono"></p>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :title, "Title", class: "block text-sm font-medium text-gray-700 mb-2" %>
+    <%= form.text_field :title,
+        required: true,
+        autofocus: true,
+        placeholder: "e.g., Holiday Highlights 2024",
+        class: "block w-full rounded border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none" %>
+  </div>
+
+  <div>
+    <%= form.label :description, "Description", class: "block text-sm font-medium text-gray-700 mb-2" %>
+    <%= form.text_area :description,
+        rows: 3,
+        placeholder: "Describe this video...",
+        class: "block w-full rounded border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none" %>
+  </div>
+
+  <div>
+    <%= form.label :tag_list, "Tags", class: "block text-sm font-medium text-gray-700 mb-2" %>
+    <%= form.text_field :tag_list,
+        value: video.tag_list,
+        placeholder: "holiday, family, 2024 (comma-separated)",
+        class: "block w-full rounded border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none" %>
+    <p class="text-xs text-gray-500 mt-1">Separate tags with commas</p>
+  </div>
+
+  <div class="flex items-center gap-3">
+    <%= form.check_box :is_public, class: "rounded border-gray-300 text-blue-600 focus:ring-blue-500" %>
+    <%= form.label :is_public, "Make this video public", class: "text-sm font-medium text-gray-700" %>
+  </div>
+
+  <div class="flex gap-3">
+    <%= form.submit video.persisted? ? "Update Video" : "Upload Video", class: "rounded bg-blue-600 hover:bg-blue-700 px-4 py-2 text-white font-medium cursor-pointer transition-colors" %>
+    <%= link_to "Cancel", video.persisted? ? video_path(video) : (video.album ? album_path(video.album) : videos_path), class: "rounded bg-gray-200 hover:bg-gray-300 px-4 py-2 text-gray-700 font-medium transition-colors" %>
+  </div>
+<% end %>
