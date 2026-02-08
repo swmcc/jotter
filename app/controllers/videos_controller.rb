@@ -84,6 +84,10 @@ class VideosController < ApplicationController
   end
 
   def video_params
-    params.require(:video).permit(:title, :description, :is_public, :tag_list, :album_id, :original)
+    if params[:video].present?
+      params.require(:video).permit(:title, :description, :is_public, :tag_list, :album_id, :original)
+    else
+      params.permit(:title, :description, :is_public, :tag_list, :album_id, :original)
+    end
   end
 end
