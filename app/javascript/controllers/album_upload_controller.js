@@ -62,6 +62,7 @@ export default class extends Controller {
     if (files.length > 0) {
       const file = files[0]
       const isVideo = file.type.startsWith("video/")
+      const namespace = isVideo ? "video" : "photo"
 
       // Update form action based on file type
       // this.element is the form since the controller is attached to the form
@@ -74,6 +75,12 @@ export default class extends Controller {
         this.inputTarget.name = "photo[image]"
         this.currentFileType = "photo"
       }
+
+      // Update other field names to match the namespace
+      this.renameField("title", namespace)
+      this.renameField("description", namespace)
+      this.renameField("is_public", namespace)
+      this.renameField("tag_list", namespace)
 
       // Update submit button text
       if (this.hasSubmitTarget) {
@@ -114,5 +121,22 @@ export default class extends Controller {
 
   triggerFileInput() {
     this.inputTarget.click()
+  }
+
+  renameField(fieldName, namespace) {
+    // Find field by common name patterns and rename to namespaced version
+    const selectors = [
+      `[name="${fieldName}"]`,
+      `[name="photo[${fieldName}]"]`,
+      `[name="video[${fieldName}]"]`
+    ]
+
+    for (const selector of selectors) {
+      const field = this.element.querySelector(selector)
+      if (field) {
+        field.name = `${namespace}[${fieldName}]`
+        return
+      }
+    }
   }
 }
