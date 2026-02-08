@@ -41,3 +41,4 @@ CLAUDE.md
 
 # Ignore incomplete native app experiments
 /native-apps/
+scripts/.DS_Store
