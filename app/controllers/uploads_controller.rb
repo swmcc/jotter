@@ -47,19 +47,19 @@ class UploadsController < ApplicationController
     # Handle base64 uploads
     file = if params[:file_base64].present?
              handle_base64_file
-           elsif params[:image_base64].present?
+    elsif params[:image_base64].present?
              handle_base64_file(params[:image_base64], params[:filename], params[:content_type])
-           elsif params[:video_base64].present?
+    elsif params[:video_base64].present?
              handle_base64_file(params[:video_base64], params[:filename], params[:content_type])
-           elsif params.dig(:photo, :image).present?
+    elsif params.dig(:photo, :image).present?
              params[:photo][:image]
-           elsif params.dig(:video, :original).present?
+    elsif params.dig(:video, :original).present?
              params[:video][:original]
-           elsif params[:image].present?
+    elsif params[:image].present?
              params[:image]
-           elsif params[:video].present?
+    elsif params[:video].present?
              params[:video]
-           end
+    end
 
     content_type = file&.content_type || params[:content_type]
 
