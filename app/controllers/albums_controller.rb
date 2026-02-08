@@ -31,6 +31,7 @@ class AlbumsController < ApplicationController
     end
 
     @photos = @album.photos.includes(:tags).order(created_at: :desc)
+    @videos = @album.videos.includes(:tags).order(created_at: :desc)
   end
 
   def new

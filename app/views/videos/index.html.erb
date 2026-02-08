@@ -1,0 +1,129 @@
+<div class="min-h-screen bg-gray-50 flex flex-col">
+  <header class="bg-white border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <%= link_to root_path, class: "hover:opacity-70" do %>
+            <div class="w-10 h-10 text-gray-800">
+              <%= image_tag "jotter.svg", class: "w-full h-full" %>
+            </div>
+          <% end %>
+          <% unless authenticated? %>
+            <p class="text-sm text-gray-600">Public videos</p>
+          <% end %>
+        </div>
+        <div class="flex items-center gap-4">
+          <% if authenticated? %>
+            <span class="text-sm text-gray-700"><%= Current.session.user.email_address %></span>
+            <%= button_to "Sign out", session_path, method: :delete, class: "text-sm text-gray-600 hover:text-gray-900 underline" %>
+          <% else %>
+            <%= link_to "Sign in", new_session_path, class: "text-sm text-blue-600 hover:text-blue-900 underline" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="mb-6 flex items-center justify-between">
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900">Videos</h2>
+        <p class="text-gray-600 mt-1"><%= @videos.count %> videos</p>
+      </div>
+      <% if authenticated? %>
+        <%= link_to new_video_path, class: "rounded bg-blue-600 hover:bg-blue-700 px-4 py-2 text-white font-medium transition-colors" do %>
+          Upload Video
+        <% end %>
+      <% end %>
+    </div>
+
+    <div class="mb-6 bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+      <%= form_with url: videos_path, method: :get, class: "flex gap-4" do |f| %>
+        <div class="flex-1">
+          <%= f.text_field :q, placeholder: "Search videos...", value: params[:q], class: "block w-full rounded border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none" %>
+        </div>
+        <%= f.submit "Search", class: "rounded bg-gray-600 hover:bg-gray-700 px-4 py-2 text-white font-medium cursor-pointer transition-colors" %>
+        <% if params[:q].present? || params[:tag].present? %>
+          <%= link_to "Clear", videos_path, class: "rounded bg-gray-200 hover:bg-gray-300 px-4 py-2 text-gray-700 font-medium transition-colors" %>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      <div class="lg:col-span-1">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+          <h3 class="font-semibold text-gray-900 mb-3">Tags</h3>
+          <div class="flex flex-wrap gap-2">
+            <% @tags.each do |tag| %>
+              <%= link_to videos_path(tag: tag.name), class: "inline-block px-3 py-1 text-sm rounded-full #{params[:tag] == tag.name ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'} transition-colors" do %>
+                <%= tag.name %>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <div class="lg:col-span-3">
+        <% if @videos.any? %>
+          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <% @videos.each do |video| %>
+              <%= link_to video_path(video), class: "group" do %>
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+                  <div class="aspect-video bg-gray-200 relative overflow-hidden">
+                    <% if video.poster.attached? %>
+                      <%= image_tag video.poster, class: "w-full h-full object-cover" %>
+                    <% else %>
+                      <div class="w-full h-full flex items-center justify-center text-4xl">
+                        <% if video.processing? %>
+                          <span class="animate-pulse">...</span>
+                        <% elsif video.failed? %>
+                          <span>!</span>
+                        <% else %>
+                          <span>?</span>
+                        <% end %>
+                      </div>
+                    <% end %>
+                    <% if video.ready? && video.formatted_duration %>
+                      <div class="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-1.5 py-0.5 rounded">
+                        <%= video.formatted_duration %>
+                      </div>
+                    <% end %>
+                    <% if video.processing? %>
+                      <div class="absolute inset-0 bg-black/50 flex items-center justify-center">
+                        <span class="text-white text-sm font-medium">Processing...</span>
+                      </div>
+                    <% elsif video.failed? %>
+                      <div class="absolute inset-0 bg-red-500/50 flex items-center justify-center">
+                        <span class="text-white text-sm font-medium">Failed</span>
+                      </div>
+                    <% end %>
+                  </div>
+                  <div class="p-2">
+                    <p class="text-sm font-medium text-gray-900 group-hover:text-blue-600 transition-colors truncate">
+                      <%= video.title %>
+                    </p>
+                    <% if video.tags.any? %>
+                      <div class="flex flex-wrap gap-1 mt-1">
+                        <% video.tags.first(2).each do |tag| %>
+                          <span class="inline-block px-1.5 py-0.5 text-xs rounded-full bg-gray-100 text-gray-600">
+                            <%= tag.name %>
+                          </span>
+                        <% end %>
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+        <% else %>
+          <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
+            <p class="text-gray-600">No videos found</p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </main>
+
+  <%= render "shared/footer" %>
+</div>

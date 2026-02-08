@@ -16,6 +16,7 @@ gem "solid_cable"
 gem "solid_cache"
 gem "solid_queue"
 gem "stimulus-rails"
+gem "streamio-ffmpeg"
 gem "tailwindcss-rails"
 gem "thruster", require: false
 gem "turbo-rails"

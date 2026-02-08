@@ -23,9 +23,11 @@ Rails.application.routes.draw do
 
   resources :albums, except: [ :new, :create ] do
     resources :photos, only: [ :new, :create ], shallow: true
+    resources :videos, only: [ :new, :create ], shallow: true
   end
 
   resources :photos, except: [ :new, :create ]
+  resources :videos
 
   # Short URL redirects
   get "x/:short_code", to: "short_urls#show", as: :short_url

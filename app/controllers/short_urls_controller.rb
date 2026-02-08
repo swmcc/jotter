@@ -20,8 +20,9 @@ class ShortUrlsController < ApplicationController
   end
 
   def show_media
-    # Try to find photo, album, or gallery by short_code
+    # Try to find photo, video, album, or gallery by short_code
     item = Photo.find_by(short_code: params[:short_code]) ||
+           Video.find_by(short_code: params[:short_code]) ||
            Album.find_by(short_code: params[:short_code]) ||
            Gallery.find_by(short_code: params[:short_code])
 
@@ -33,6 +34,10 @@ class ShortUrlsController < ApplicationController
     # For photos, serve the actual image for Slack/social media previews
     if item.is_a?(Photo)
       redirect_to rails_blob_path(item.image, disposition: "inline"), allow_other_host: false
+    # For videos, serve the transcoded video (or original if not ready)
+    elsif item.is_a?(Video)
+      video_blob = item.ready? && item.transcoded.attached? ? item.transcoded : item.original
+      redirect_to rails_blob_path(video_blob, disposition: "inline"), allow_other_host: false
     # For albums and galleries, redirect to their show pages
     elsif item.is_a?(Album)
       redirect_to album_path(item)

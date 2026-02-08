@@ -20,7 +20,7 @@
   <main class="flex-1 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
     <div class="mb-6">
       <%= link_to dashboard_path, class: "text-gray-600 hover:text-gray-900 flex items-center gap-2" do %>
-        <span>←</span>
+        <span>&larr;</span>
         <span>Back to Dashboard</span>
       <% end %>
     </div>
@@ -34,10 +34,10 @@
     <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
       <div class="text-center mb-8">
         <h2 class="text-3xl font-bold text-gray-900 mb-2">Quick Upload</h2>
-        <p class="text-gray-600">Drop a photo and go. It'll use the filename as the title.</p>
+        <p class="text-gray-600">Drop a photo or video and go. It'll use the filename as the title.</p>
       </div>
 
-      <%= form_with(model: @photo, url: uploads_path, class: "space-y-6", data: { controller: "photo-upload" }) do |form| %>
+      <%= form_with(url: uploads_path, class: "space-y-6", data: { controller: "media-upload" }) do |form| %>
         <% if @photo.errors.any? %>
           <div class="rounded bg-red-50 border border-red-200 p-4">
             <h3 class="text-red-800 font-semibold mb-2"><%= pluralize(@photo.errors.count, "error") %> prevented upload:</h3>
@@ -51,37 +51,39 @@
 
         <!-- Drag and Drop Zone -->
         <div
-          data-photo-upload-target="dropzone"
+          data-media-upload-target="dropzone"
           class="border-2 border-dashed border-gray-300 rounded-lg p-12 text-center transition-colors cursor-pointer hover:border-gray-400">
 
           <%= form.file_field :image,
+              name: "image",
               required: true,
-              accept: "image/jpeg,image/jpg,image/png,image/gif,image/webp",
+              accept: "image/jpeg,image/jpg,image/png,image/gif,image/webp,video/mp4,video/quicktime,video/x-msvideo,video/mpeg,video/webm,video/x-m4v,video/x-matroska",
               class: "hidden",
               data: {
-                photo_upload_target: "input",
-                action: "change->photo-upload#handleFileSelect"
+                media_upload_target: "input",
+                action: "change->media-upload#handleFileSelect"
               } %>
 
-          <div class="space-y-4" onclick="this.closest('[data-photo-upload-target=dropzone]').querySelector('input[type=file]').click()">
-            <div class="text-8xl">📸</div>
+          <div class="space-y-4" onclick="this.closest('[data-media-upload-target=dropzone]').querySelector('input[type=file]').click()">
+            <div class="text-8xl" data-media-upload-target="icon">...</div>
             <div>
-              <p class="text-xl font-medium text-gray-700">Drop your photo here or click to browse</p>
-              <p class="text-gray-500 mt-2">JPG, PNG, GIF, or WebP (max 10MB)</p>
+              <p class="text-xl font-medium text-gray-700">Drop your file here or click to browse</p>
+              <p class="text-gray-500 mt-2">Photos: JPG, PNG, GIF, WebP (max 10MB)</p>
+              <p class="text-gray-500">Videos: MP4, MOV, AVI, MPEG, WebM, MKV (max 500MB)</p>
             </div>
 
-            <!-- Preview -->
-            <img data-photo-upload-target="preview" class="hidden mx-auto max-h-64 rounded shadow-lg" />
+            <!-- Preview (for images) -->
+            <img data-media-upload-target="preview" class="hidden mx-auto max-h-64 rounded shadow-lg" />
 
             <!-- Filename -->
-            <p data-photo-upload-target="filename" class="hidden text-lg text-gray-700 font-semibold mt-4"></p>
+            <p data-media-upload-target="filename" class="hidden text-lg text-gray-700 font-semibold mt-4"></p>
           </div>
         </div>
 
         <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
           <p class="text-sm text-blue-800">
-            💡 <strong>Tip:</strong> The filename will be used as the title. You can edit it later if needed.
-            Photos go into your "Uploads" album.
+            The filename will be used as the title. You can edit it later if needed.
+            Files go into your "Uploads" album. Videos will be transcoded for web playback.
           </p>
         </div>
 
@@ -108,13 +110,13 @@
 
             <div class="flex items-center gap-3">
               <%= form.check_box :is_public, class: "rounded border-gray-300 text-blue-600 focus:ring-blue-500" %>
-              <%= form.label :is_public, "Make this photo public", class: "text-sm font-medium text-gray-700" %>
+              <%= form.label :is_public, "Make this public", class: "text-sm font-medium text-gray-700" %>
             </div>
           </div>
         </details>
 
         <div>
-          <%= form.submit "Upload Photo", class: "w-full rounded bg-blue-600 hover:bg-blue-700 px-6 py-3 text-white text-lg font-medium cursor-pointer transition-colors" %>
+          <%= form.submit "Upload", class: "w-full rounded bg-blue-600 hover:bg-blue-700 px-6 py-3 text-white text-lg font-medium cursor-pointer transition-colors" %>
         </div>
       <% end %>
     </div>
