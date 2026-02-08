@@ -107,32 +107,30 @@
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <%= form.label :title, "Title", class: "block text-sm font-medium text-gray-700 mb-2" %>
-              <%= form.text_field :title,
-                  required: true,
-                  placeholder: "e.g., Sunset in Paris",
-                  class: "block w-full rounded border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none" %>
+              <label for="media_title" class="block text-sm font-medium text-gray-700 mb-2">Title</label>
+              <input type="text" name="photo[title]" id="media_title" required
+                  placeholder="e.g., Sunset in Paris"
+                  class="block w-full rounded border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none" />
             </div>
 
             <div>
-              <%= form.label :tag_list, "Tags", class: "block text-sm font-medium text-gray-700 mb-2" %>
-              <%= form.text_field :tag_list,
-                  placeholder: "sunset, paris (comma-separated)",
-                  class: "block w-full rounded border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none" %>
+              <label for="media_tag_list" class="block text-sm font-medium text-gray-700 mb-2">Tags</label>
+              <input type="text" name="photo[tag_list]" id="media_tag_list"
+                  placeholder="sunset, paris (comma-separated)"
+                  class="block w-full rounded border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none" />
             </div>
           </div>
 
           <div>
-            <%= form.label :description, "Description (optional)", class: "block text-sm font-medium text-gray-700 mb-2" %>
-            <%= form.text_area :description,
-                rows: 2,
-                placeholder: "Describe this media...",
-                class: "block w-full rounded border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none" %>
+            <label for="media_description" class="block text-sm font-medium text-gray-700 mb-2">Description (optional)</label>
+            <textarea name="photo[description]" id="media_description" rows="2"
+                placeholder="Describe this media..."
+                class="block w-full rounded border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"></textarea>
           </div>
 
           <div class="flex items-center gap-3">
-            <%= form.check_box :is_public, checked: @album.is_public, class: "rounded border-gray-300 text-blue-600 focus:ring-blue-500" %>
-            <%= form.label :is_public, "Make this public", class: "text-sm font-medium text-gray-700" %>
+            <input type="checkbox" name="photo[is_public]" id="media_is_public" value="1" <%= @album.is_public ? "checked" : "" %> class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+            <label for="media_is_public" class="text-sm font-medium text-gray-700">Make this public</label>
           </div>
 
           <div>
