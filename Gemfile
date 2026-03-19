@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
 gem "aws-sdk-s3", require: false
-gem "bcrypt", "~> 3.1.21"
+gem "bcrypt", "~> 3.1.22"
 gem "bootsnap", require: false
 gem "image_processing", "~> 1.2"
 gem "importmap-rails"
