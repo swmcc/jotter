@@ -4,6 +4,7 @@ gem "aws-sdk-s3", require: false
 gem "bcrypt", "~> 3.1.22"
 gem "bootsnap", require: false
 gem "image_processing", "~> 2.0"
+gem "ruby-vips", "~> 2.2" # image_processing 2.0 dropped this as a dependency; required for Active Storage variants
 gem "importmap-rails"
 gem "jbuilder"
 gem "kamal", require: false
