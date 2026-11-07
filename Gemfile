@@ -3,16 +3,16 @@ source "https://rubygems.org"
 gem "aws-sdk-s3", require: false
 gem "bcrypt", "~> 3.1.22"
 gem "bootsnap", require: false
-gem "image_processing", "~> 2.0"
+gem "image_processing", "~> 2.2"
 gem "ruby-vips", "~> 2.2" # image_processing 2.0 dropped this as a dependency; required for Active Storage variants
 gem "importmap-rails"
 gem "jbuilder"
 gem "kamal", require: false
-gem "pg", "~> 1.6"
+gem "pg", "~> 1.7"
 gem "propshaft"
 gem "puma", ">= 5.0"
 gem "rack-cors"
-gem "rails", "~> 8.1.2"
+gem "rails", "~> 8.1.4"
 gem "solid_cable"
 gem "solid_cache"
 gem "solid_queue"
