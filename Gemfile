@@ -8,7 +8,7 @@ gem "ruby-vips", "~> 2.2" # image_processing 2.0 dropped this as a dependency; r
 gem "importmap-rails"
 gem "jbuilder"
 gem "kamal", require: false
-gem "pg", "~> 1.6"
+gem "pg", "~> 1.7"
 gem "propshaft"
 gem "puma", ">= 5.0"
 gem "rack-cors"
